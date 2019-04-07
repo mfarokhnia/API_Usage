@@ -11,5 +11,9 @@ namespace API_Usage.Models
         public List<Equity> SecondEQ { set; get; }
         public List<DailyEquity> FirstDailyEQ { set; get; }
         public List<DailyEquity> SecondDailyEQ { set; get; }
+        public List<Financial> FirstFinancial { set; get; }
+        public List<Financial> SecondFinancial { set; get; }
+        public List<Quote> FirstQuote { set; get; }
+        public List<Quote> SecondQuote { set; get; }
     }
 }
