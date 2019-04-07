@@ -2,43 +2,73 @@
 
 @{
     //ViewData["Title"] = "ComparisonByDailyEquity";
-    Layout = null;
+    //Layout = null;
 }
 
-<h2>ComparisonByDailyEquity</h2>
+<html>
+<head>
+    <style>
+        body {
+            width: 90%;
+            margin: 0 auto;
+        }
 
-<h4>EQComparison</h4>
+        table:first-child {
+            background-color: beige;
+            color: white;
+            margin-right: 1%;
+        }
+
+        table:nth-child(2n) {
+            background-color: beige;
+            color: black;
+        }
+
+        table {
+            width: 49%;
+            float: left;
+        }
+    </style>
+</head>
+<h2>Comparison By Daily Equity</h2>
+
+<h4>This page allows you to compare the quote of two symbols on a day to day basis</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ComparisonByDailyEquity">
+        <form asp-action="ComparisonByDailyEquity" method="get">
+            <p> ***To get a list of the symbols please click on the Symbols tab</p>
+            <p> Symbol 1: <input type="text" id="txtName" name="symbol1" /></p>
+            <p> Symbol 2: <input type="text" id="txtName2" name="symbol2" /></p>
+            <input type="submit" value="Compare" class="btn btn-default" />
+            <p>The chart below is comparing the two symbols below @DateTime.Now</p>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
-<table>
+<body>
+<table align="center" border="1" style="margin: 0px auto;">
     <thead>
         <tr>
             <th>
                 Symbol
             </th>
             <th>
-                Name
+                Market Average
             </th>
             <th>
-                Date
+                Market High
             </th>
             <th>
-                Type
+                Market Low
             </th>
         </tr>
     </thead>
 
-    <tbody>
+    <tbody align="center" style="margin: 0px auto;">
 
         @foreach (var item in Model.FirstDailyEQ)
         {
@@ -59,25 +89,25 @@
         }
 </table>
 
-<table>
+<table align="center" border="1" style="margin: 0px auto;">
     <thead>
         <tr>
             <th>
                 Symbol
             </th>
             <th>
-                Name
+                Market Average
             </th>
             <th>
-                Date
+                Market High
             </th>
             <th>
-                Type
+                Market Low
             </th>
         </tr>
     </thead>
 
-    <tbody>
+    <tbody align="center" style="margin: 0px auto;">
 
         @foreach (var item in Model.SecondDailyEQ)
         {
@@ -102,3 +132,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+    </body>
+</html>

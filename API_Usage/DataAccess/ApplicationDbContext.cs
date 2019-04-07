@@ -13,5 +13,5 @@ namespace API_Usage.DataAccess
         public DbSet<Financial> Financials { get; set; }
         public DbSet<Quote> Quotes { get; set; }
 
-  }
+    }
 }

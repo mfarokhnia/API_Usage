@@ -98,7 +98,7 @@ namespace API_Usage.Controllers
             return View(VM);
         }
 
-        public IActionResult ComparisonByDailyEquity(string symbol1 = "AAC", string symbol2 = "AAP")
+        public IActionResult ComparisonByDailyEquity(string symbol1 , string symbol2 )
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
@@ -123,7 +123,7 @@ namespace API_Usage.Controllers
         }
 
 
-        public IActionResult ComparisonByFinancial(string symbol1 = "AAC", string symbol2 = "AAP")
+        public IActionResult ComparisonByFinancial(string symbol1 , string symbol2 )
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
@@ -148,7 +148,7 @@ namespace API_Usage.Controllers
             return View(FinancialVM);
         }
 
-        public IActionResult ComparisonByQuote(string symbol1 = "AAC", string symbol2 = "AAP")
+        public IActionResult ComparisonByQuote(string symbol1, string symbol2)
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
@@ -338,9 +338,13 @@ namespace API_Usage.Controllers
             // parse the string into appropriate objects
             if (!Dailycharts.Equals(""))
             {
-                DailyChartRoot dailyroot = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
-                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                DailyEquities = dailyroot.dailychart.ToList();
+                // DailyChartRoot dailyroot = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
+                // new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                //DailyEquities = dailyEquities.dailychart.ToList();
+                DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                
+               // List<DailyEquity> equities = JsonConvert.DeserializeObject<List<DailyEquity>>(/*put your parameters here*/);
+
             }
 
             // fix the relations. By default the quotes do not have the company symbol
@@ -417,6 +421,9 @@ namespace API_Usage.Controllers
                 FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
                   new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 DailyFinancial = financialdailyroot.financial.ToList();
+
+              //  Financial[] financial = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
             }
 
             // fix the relations. By default the quotes do not have the company symbol
@@ -467,7 +474,7 @@ namespace API_Usage.Controllers
         }
 
 
-        public List<Quote> GetQuote(string symbol)
+        public List<Quote> GetQuote(string symbol="AAP")
         {
             // string to specify information to be retrieved from the API
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/quote";
