@@ -1,122 +1,171 @@
-﻿@model EQComparison
+﻿@model EQComparison 
 
 
 
 @{
     // ViewData["Title"] = "ComparisonByEquity";
-    Layout = null;
+   // Layout=null;
 }
+<html>
+<head>
+    <style>
+        body {
+            width: 90%;
+            margin: 0 auto;
+        }
 
-<h2>ComparisonByEquity</h2>
+        table:first-child {
+            background-color: beige;
+            color: white;
+            margin-right: 1%;
+        }
 
-<h4>AllEquities</h4>
+        table:nth-child(2n) {
+            background-color:beige;
+            color: black;
+        }
+
+        table {
+            width: 49%;
+            float: left;
+        }
+    </style>
+</head>
+
+<h2>Comparison By Equity</h2>
+
+<h4>This page compares two symbols side by side so that users can make informed decision on market data</h4>
+
+ <hr />
 <hr />
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ComparisonByEquity">
+        <form asp-action="ComparisonByEquity" method="get">
+            <p> ***To get a list of the symbols please click on the Symbols tab</p>
+            <p> Symbol 1: <input type="text" id="txtName" name="symbol1" /></p>
+            <p> Symbol 2: <input type="text" id="txtName2" name="symbol2" /></p>
+            <input type="submit" value="Compare" class="btn btn-default" />
+            <p>The chart below is comparing the two symbols below @DateTime.Now</p>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
+<body>
 
 
-<table>
-    <thead>
-        <tr>
-            <th>
-                Symbol
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Type
-            </th>
-        </tr>
-    </thead>
-
-    <tbody>
-
-        @foreach (var item in Model.FirstEQ)
-        {
+    <table align="center" border="1" style="margin: 0px auto;">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.symbol)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.label)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.high)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.open)
-                </td>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    High
+                </th>
+                <th>
+                    Low
+                </th>
+                <th>
+                    Close
+                </th>
             </tr>
-        }
-</table>
+        </thead>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ComparisonByEquity">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        <tbody  align="center" style="margin: 0px auto;">
+
+            @foreach (var item in Model.FirstEQ)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.symbol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.high)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.low)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.close)
+                    </td>
+                </tr>
+            }
+    </table>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="ComparisonByEquity">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <!--<input type="submit" value="Create" class="btn btn-default" />-->
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
+    <script>
+    alertDbSave(@ViewBag.dbSuccessComp);
+    </script>
 
-
-<table>
-    <thead>
-        <tr>
-            <th>
-                Symbol
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Type
-            </th>
-        </tr>
-    </thead>
-
-    <tbody>
-
-        @foreach (var item in Model.SecondEQ)
-        {
+    <table align="center" border="1" style="margin: 0px auto;">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.symbol)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.label)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.high)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.open)
-                </td>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    High
+                </th>
+                <th>
+                    Low
+                </th>
+                <th>
+                    Close
+                </th>
             </tr>
-        }
-</table>
+        </thead>
+
+        <tbody align="center" style="margin: 0px auto;">
+
+            @foreach (var item in Model.SecondEQ)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.symbol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.high)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.low)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.close)
+                    </td>
+                </tr>
+            }
+    </table>
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+</body>
+</html>
