@@ -1,0 +1,68 @@
+﻿
+
+
+<html>
+
+<head>
+
+
+</head>
+</html>
+
+<body>
+    <h1>
+        Introduction
+    </h1>
+    <hr />
+    <p>
+        This is an extension of the IEX Trading application. As a group we thought the current IEX Trading was limited in some form of functionalities. In addition to that,
+        we are adding five more API end points to pull stock data including the below:
+        <ul>
+            <li>
+                /stock/aapl/quote: This gives us the quota data
+            </li>
+            <li>
+                /stock/aapl/financials: Pulls income statement, balance sheet, and cash flow data from the four most recent reported quarters.
+            </li>
+            <li>
+                /stock/aapl/chart/1y: Historically adjusted market-wide data
+            </li>
+            <li>
+                /stock/aapl/chart/1d: Performed a batch request for two symbols
+            </li>
+            <li>
+                /stock/aapl/chart: IEX-only data by minute
+            </li>
+
+        </ul>
+
+        Among the five, all of them had lots of fields avaialable to choose from, but for simplicity we only pulled the fields that we needed for enhancing the application.
+
+        We created five database tables to hold these data These table definitions can be seen in the Model classes where we provided data dictionary for all the tables and feilds.
+        The new classes added are:
+        <ul>
+            <li>
+                AllEquities
+            </li>
+            <li>
+                EQComparison
+            </li>
+            <li>
+                EF_Model
+                <ul>
+                    <li>
+                        DailyEquity
+                    </li>
+                    <li>
+                        Financial
+                    </li>
+                    <li>
+                        Quota>
+
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+    </p>
+</body>

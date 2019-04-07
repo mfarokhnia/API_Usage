@@ -51,6 +51,11 @@ namespace API_Usage.Controllers
       return View();
     }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
     /****
      * The Symbols action calls the GetSymbols method that returns a list of Companies.
      * This list of Companies is passed to the Symbols View.
@@ -68,14 +73,15 @@ namespace API_Usage.Controllers
       return View(companies);
     }
 
-        public IActionResult ComparisonByEquity(string symbol1="AAC", string symbol2="AA")
+        public IActionResult ComparisonByEquity(string symbol1, string symbol2)
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
             
             List<Equity> equity1 = new List<Equity>();
             List<Equity> equity2 = new List<Equity>();
-
+           // ViewBag.Name = "txt";
+            //ViewBag.Name2 = "txt";
             
             if (symbol1 != null && symbol2!= null )
             {
@@ -170,7 +176,7 @@ namespace API_Usage.Controllers
         // https://stackoverflow.com/a/46280739
         //JObject result = JsonConvert.DeserializeObject<JObject>(companyList);
         companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
-        companies = companies.GetRange(0, 50);
+        companies = companies.GetRange(0, 150);
       }
 
       return companies;
