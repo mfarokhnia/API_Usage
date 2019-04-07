@@ -1,17 +1,65 @@
 ﻿@model EQComparison
 
 @{
-    //ViewData["Title"] = "ComparisonByDailyEquity";
-    Layout = null;
+    ViewData["Title"] = "ComparisonByFinancial";
 }
 
-<h2>ComparisonByDailyEquity</h2>
+<h2>ComparisonByFinancial</h2>
 
 <h4>EQComparison</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ComparisonByDailyEquity">
+        <form asp-action="ComparisonByFinancial">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Symbol
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Type
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.FirstFinancial)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.symbol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.netincome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totaldebt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totalcash)
+                </td>
+            </tr>
+        }
+</table>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ComparisonByEquity">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -20,44 +68,7 @@
     </div>
 </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>
-                Symbol
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Type
-            </th>
-        </tr>
-    </thead>
 
-    <tbody>
-
-        @foreach (var item in Model.FirstDailyEQ)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.symbol)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.marketaverage)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.markethigh)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.marketlow)
-                </td>
-            </tr>
-        }
-</table>
 
 <table>
     <thead>
@@ -79,20 +90,20 @@
 
     <tbody>
 
-        @foreach (var item in Model.SecondDailyEQ)
+        @foreach (var item in Model.SecondFinancial)
         {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.symbol)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.marketaverage)
+                    @Html.DisplayFor(modelItem => item.netincome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.markethigh)
+                    @Html.DisplayFor(modelItem => item.totaldebt)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.marketlow)
+                    @Html.DisplayFor(modelItem => item.totalcash)
                 </td>
             </tr>
         }

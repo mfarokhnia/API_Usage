@@ -80,10 +80,10 @@ namespace API_Usage.Models
     public Equity[] chart { get; set; }
   }
 
-    public class DailyChartRoot
-    {
-        public DailyEquity[] dailychart { get; set; }
-    }
+  public class DailyChartRoot
+   {
+     public DailyEquity[] dailychart { get; set; }
+   }
     public class FinancialRoot
     {
         public Financial[] financial { get; set; }

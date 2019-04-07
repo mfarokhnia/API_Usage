@@ -92,7 +92,7 @@ namespace API_Usage.Controllers
             return View(VM);
         }
 
-        public IActionResult ComparisonByDailyEquity(string symbol1 = "AAC", string symbol2 = "AA")
+        public IActionResult ComparisonByDailyEquity(string symbol1 = "AAC", string symbol2 = "AAP")
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
@@ -114,6 +114,57 @@ namespace API_Usage.Controllers
             DailyVM.SecondDailyEQ = dailyequity2;
 
             return View(DailyVM);
+        }
+
+
+        public IActionResult ComparisonByFinancial(string symbol1 = "AAC", string symbol2 = "AAP")
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSuccessChart = 0;
+
+            List<Financial> financial1 = new List<Financial>();
+            List<Financial> financial2 = new List<Financial>();
+
+
+
+            if (symbol1 != null && symbol2 != null)
+            {
+                financial1 = GetFinancial(symbol1);
+                financial2 = GetFinancial2(symbol2);
+
+                //financial1 = financial1.OrderBy(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
+                //financial2 = financial2.OrderBy(c => c.minute).ToList();
+            }
+            var FinancialVM = new EQComparison();
+            FinancialVM.FirstFinancial = financial1;
+            FinancialVM.SecondFinancial = financial2;
+
+            return View(FinancialVM);
+        }
+
+        public IActionResult ComparisonByQuote(string symbol1 = "AAC", string symbol2 = "AAP")
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSuccessChart = 0;
+
+            List<Quote> quote1 = new List<Quote>();
+            List<Quote> quote2 = new List<Quote>();
+
+
+
+            if (symbol1 != null && symbol2 != null)
+            {
+                quote1 = GetQuote(symbol1);
+                quote2 = GetQuote2(symbol2);
+
+                //financial1 = financial1.OrderBy(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
+                //financial2 = financial2.OrderBy(c => c.minute).ToList();
+            }
+            var QuoteVM = new EQComparison();
+            QuoteVM.FirstQuote = quote1;
+            QuoteVM.SecondQuote = quote2;
+
+            return View(QuoteVM);
         }
         /****
          * The Chart action calls the GetChart method that returns 1 year's equities for the passed symbol.
@@ -235,6 +286,8 @@ namespace API_Usage.Controllers
             if (response.IsSuccessStatusCode)
             {
                 charts = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                //charts.GetType();
+
             }
 
             // parse the string into appropriate objects
@@ -273,14 +326,15 @@ namespace API_Usage.Controllers
             if (response.IsSuccessStatusCode)
             {
                 Dailycharts = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var aa = Dailycharts.GetType();
             }
 
             // parse the string into appropriate objects
             if (!Dailycharts.Equals(""))
             {
-                IEnumerable< DailyChartRoot> dailyroot = JsonConvert.DeserializeObject<IEnumerable< DailyChartRoot>>(Dailycharts,
-                  new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                //DailyEquities = dailyroot.dailychart.ToList();
+                DailyChartRoot dailyroot = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                DailyEquities = dailyroot.dailychart.ToList();
             }
 
             // fix the relations. By default the quotes do not have the company symbol
@@ -296,7 +350,7 @@ namespace API_Usage.Controllers
         public List<DailyEquity> GetDailyChart2(string symbol)
         {
             // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/batch?types=chart&range=1d";
+            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/chart/1d";
 
             // initialize objects needed to gather data
             string Dailycharts = "";
@@ -315,9 +369,9 @@ namespace API_Usage.Controllers
             // parse the string into appropriate objects
             if (!Dailycharts.Equals(""))
             {
-                IEnumerable< DailyChartRoot> dailyroot = JsonConvert.DeserializeObject <IEnumerable <DailyChartRoot>>(Dailycharts,
-                  new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-              //  DailyEquities = dailyroot.dailychart.ToList();
+                IEnumerable<DailyChartRoot> dailyroot = JsonConvert.DeserializeObject<IEnumerable<DailyChartRoot>>(Dailycharts,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                // DailyEquities = dailyroot.dailychart.ToList();
             }
 
             // fix the relations. By default the quotes do not have the company symbol
@@ -369,6 +423,44 @@ namespace API_Usage.Controllers
             return DailyFinancial;
         }
 
+        public List<Financial> GetFinancial2(string symbol)
+        {
+            // string to specify information to be retrieved from the API
+            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/financials";
+
+            // initialize objects needed to gather data
+            string FixFinancial = "";
+            List<Financial> DailyFinancial = new List<Financial>();
+            httpClient2.BaseAddress = new Uri(IEXTrading_API_PATH2);
+
+            // connect to the API and obtain the response
+            HttpResponseMessage response = httpClient2.GetAsync(IEXTrading_API_PATH2).GetAwaiter().GetResult();
+
+            // now, obtain the Json objects in the response as a string
+            if (response.IsSuccessStatusCode)
+            {
+                FixFinancial = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            // parse the string into appropriate objects
+            if (!FixFinancial.Equals(""))
+            {
+                FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
+                  new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                DailyFinancial = financialdailyroot.financial.ToList();
+            }
+
+            // fix the relations. By default the quotes do not have the company symbol
+            //  this symbol serves as the foreign key in the database and connects the quote to the company
+            foreach (Financial financial in DailyFinancial)
+            {
+                financial.symbol = symbol;
+            }
+
+            return DailyFinancial;
+        }
+
+
         public List<Quote> GetQuote(string symbol)
         {
             // string to specify information to be retrieved from the API
@@ -381,6 +473,43 @@ namespace API_Usage.Controllers
 
             // connect to the API and obtain the response
             HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+
+            // now, obtain the Json objects in the response as a string
+            if (response.IsSuccessStatusCode)
+            {
+                CompanyQuote = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            // parse the string into appropriate objects
+            if (!CompanyQuote.Equals(""))
+            {
+                QuoteRoot quoteroot = JsonConvert.DeserializeObject<QuoteRoot>(CompanyQuote,
+                  new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                DailyQuote = quoteroot.quote.ToList();
+            }
+
+            // fix the relations. By default the quotes do not have the company symbol
+            //  this symbol serves as the foreign key in the database and connects the quote to the company
+            foreach (Quote quotee in DailyQuote)
+            {
+                quotee.companysymbol = symbol;
+            }
+
+            return DailyQuote;
+        }
+
+        public List<Quote> GetQuote2(string symbol)
+        {
+            // string to specify information to be retrieved from the API
+            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/quote";
+
+            // initialize objects needed to gather data
+            string CompanyQuote = "";
+            List<Quote> DailyQuote = new List<Quote>();
+            httpClient2.BaseAddress = new Uri(IEXTrading_API_PATH2);
+
+            // connect to the API and obtain the response
+            HttpResponseMessage response = httpClient2.GetAsync(IEXTrading_API_PATH2).GetAwaiter().GetResult();
 
             // now, obtain the Json objects in the response as a string
             if (response.IsSuccessStatusCode)
