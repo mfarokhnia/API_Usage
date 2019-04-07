@@ -280,7 +280,7 @@ namespace API_Usage.Controllers
             {
                 IEnumerable< DailyChartRoot> dailyroot = JsonConvert.DeserializeObject<IEnumerable< DailyChartRoot>>(Dailycharts,
                   new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                DailyEquities = dailyroot.dailychart.ToList();
+                //DailyEquities = dailyroot.dailychart.ToList();
             }
 
             // fix the relations. By default the quotes do not have the company symbol
@@ -315,9 +315,9 @@ namespace API_Usage.Controllers
             // parse the string into appropriate objects
             if (!Dailycharts.Equals(""))
             {
-                DailyChartRoot dailyroot = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
+                IEnumerable< DailyChartRoot> dailyroot = JsonConvert.DeserializeObject <IEnumerable <DailyChartRoot>>(Dailycharts,
                   new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                DailyEquities = dailyroot.dailychart.ToList();
+              //  DailyEquities = dailyroot.dailychart.ToList();
             }
 
             // fix the relations. By default the quotes do not have the company symbol
