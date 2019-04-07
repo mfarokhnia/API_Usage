@@ -413,7 +413,7 @@ namespace API_Usage.Controllers
             {
                 FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
                   new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                DailyFinancial = financialdailyroot.financial.ToList();
+              //  DailyFinancial = financialdailyroot.financial.ToList();
 
                 //  Financial[] financial = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             }

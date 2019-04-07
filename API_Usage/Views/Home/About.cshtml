@@ -1,7 +1,4 @@
-﻿
-
-
-<html>
+﻿<html>
 
 <head>
 
@@ -15,7 +12,7 @@
     </h1>
     <hr />
     <p>
-        This is an extension of the IEX Trading application. As a group we thought the current IEX Trading was limited in some form of functionalities. Our Main goal is to provide a comprehensive platfrom through which users are able to compare different stocks. 
+        This is an extension of the IEX Trading application. As a group we thought the current IEX Trading was limited in some form of functionalities. Our Main goal is to provide a comprehensive platfrom through which users are able to compare different stocks.
         The generated platform allow them to choose the stocks and compare them either through daily or annual equities or by the mean of financial attributes of the stocks or real time quotes. In addition to that,
         we are adding five more API end points to pull stock data including the below:
         <ul>
@@ -32,7 +29,7 @@
                 /stock/aapl/chart/1d: Performed a batch request for two symbols
             </li>
             <li>
-                /stock/aapl/chart: IEX-only data by minute //this is company not chart and we should let them know we have added more properties to the existing classes
+                /stock/aapl/company:  Through this api end point we pull the information about companies incuding their symbols, name, industry, etc.
             </li>
 
         </ul>
@@ -40,14 +37,15 @@
         Our application focused mostly on the Stock data that IEXTrading is proving through their end point.
         Among the five, all of them had lots of fields avaialable to choose from, but for simplicity we only pulled the fields that we needed for enhancing the application.
 
-        We created five database tables to hold these data These table definitions can be seen in the Model classes where we provided data dictionary for all the tables and feilds.
+        We created five database tables to hold these data their tables definitions can be seen in the Model classes where we provided data dictionary for all the tables and feilds.
         The new classes added are:
         <ul>
+            //these are our classes, right? no company, daily equity, equity, financial, quote. o
             <li>
-                AllEquities
+                Equities: We extended the existing table by adding additional fields that we used in our application
             </li>
             <li>
-                EQComparison
+                Companies: We extended the existing table by adding additional fields that we used in our application
             </li>
             <li>
                 EF_Model
@@ -59,19 +57,17 @@
                         Financial
                     </li>
                     <li>
-                        Quota
-
+                        Quote
                     </li>
 
                 </ul>
-            <li>
-                Companies: We extended the existing table by adding additional fields that we used in our application
-            </li>
-            <li>
-                Equities: We extended the existing table by adding additional fields that we used in our application
-            </li>
             </li>
         </ul>
+        <br />
+        All the data model class and database definitions are in the class models. The application is designed in the way that , it will automatically create the database objects, including the
+        actual database used which is IEXTrading_API. I will then create all the tables and assign them the appropriate keys and constraints defined in each class.
+        We designed the database classes in a third normal form to ensure that there are no transitive data in any of the tables. This way we are able to provide
+        a well defined and redundancy-free database architecture.
     </p>
     <h2>Involved Team Members</h2>
     <p> This section provides breif information about the team memebers involved in enhancing this application</p>
@@ -89,11 +85,15 @@
             Moez: I am a Second year PhD student at Information Systems and Decision Sciences at Muma College of Business. My research area is network science and I am also working on Optimization in data driven researches. I am aiming for an Academic job in my domain after I graduated.
         </li>
         <br />
-        <img src="http://www.texasforthem.org/wp-content/uploads/2016/03/Feral-Cat-1.jpg" style="width:100px;height:100px;" />
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/University_of_South_Florida_seal.svg/1200px-University_of_South_Florida_seal.svg.png" style="width:100px;height:100px;" />
         <li>
             Gleb: Gleb is currently doing his PhD in Information Systems and Decisions Science at University of South Florida. He holds Master degree in Applied Mathematics and Physics
             form Moscow Institute of Physics and Technology, the leading Russian Research University. In addition, he graduated from University of South Florida with MBA degree in 2016.
             His specialization is machine learning and data analytics.
         </li>
     </ul>
+    <br />
+    <p>Thanks for visiting our site.</p>
+    <br />
+    <p>The current date and time is @DateTime.Now</p>
 </body>
