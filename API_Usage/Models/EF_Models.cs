@@ -39,29 +39,29 @@ namespace API_Usage.Models
     {
         public int DailyEquityId { get; set; }
         public string minute { get; set; }
-        public float marketaverage { get; set; }
-        public float marketnotional { get; set; }
-        public float marketnumberoftrades { get; set; }
-        public float marketopen { get; set; }
-        public float marketclose { get; set; }
-        public float markethigh { get; set; }
-        public float marketlow { get; set; }
-        public float marketvolume { get; set; }
-        public float average { get; set; }
+        public float? marketaverage { get; set; }
+        public float? marketnotional { get; set; }
+        public float? marketnumberoftrades { get; set; }
+        public float? marketopen { get; set; }
+        public float? marketclose { get; set; }
+        public float? markethigh { get; set; }
+        public float? marketlow { get; set; }
+        public float? marketvolume { get; set; }
+        public float? average { get; set; }
         public string symbol { get; set; }
     }
 
     public class Financial
     {
         public int  FinancialId { get; set; }
-        public float grosspropfit { get; set; }
-        public float totalrevenue { get; set; }
-        public float netincome { get; set; }
-        public float currentassets { get; set; }
-        public float totalliabilities { get; set; }
-        public float totalcash { get; set; }
-        public float totaldebt { get; set; }
-        public float cashflow { get; set; }
+        public float? grosspropfit { get; set; }
+        public float? totalrevenue { get; set; }
+        public float? netincome { get; set; }
+        public float? currentassets { get; set; }
+        public float? totalliabilities { get; set; }
+        public float? totalcash { get; set; }
+        public float? totaldebt { get; set; }
+        public float? cashflow { get; set; }
         public string symbol { get; set; }
     }
     public class Quote
@@ -82,7 +82,7 @@ namespace API_Usage.Models
 
   public class DailyChartRoot
    {
-     public DailyEquity[] dailychart { get; set; }
+     public List <DailyEquity> dailychart { get; set; }
    }
     public class FinancialRoot
     {
