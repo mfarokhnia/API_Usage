@@ -176,7 +176,7 @@ namespace API_Usage.Controllers
         // https://stackoverflow.com/a/46280739
         //JObject result = JsonConvert.DeserializeObject<JObject>(companyList);
         companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
-        companies = companies.GetRange(0, 150);
+        companies = companies.GetRange(0, 50);
       }
 
       return companies;
