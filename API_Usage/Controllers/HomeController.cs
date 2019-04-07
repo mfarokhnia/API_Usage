@@ -73,32 +73,30 @@ namespace API_Usage.Controllers
       return View(companies);
     }
 
-        public IActionResult ComparisonByEquity(string symbol1, string symbol2)
+        public IActionResult ComparisonByEquity(string symbol1, string symbol2) //it allows users to compare two selected symbols based on their yearly equity 
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
             
             List<Equity> equity1 = new List<Equity>();
             List<Equity> equity2 = new List<Equity>();
-           // ViewBag.Name = "txt";
-            //ViewBag.Name2 = "txt";
             
             if (symbol1 != null && symbol2!= null )
             {
-                equity1 = GetChart(symbol1);
+                equity1 = GetChart(symbol1); //it calls getchart method which returns the annual equity report
                 equity2 = GetChart2(symbol2);
 
                 equity1 = equity1.OrderBy(c => c.date).ToList(); //Make sure the data is in ascending order of date.
                 equity2 = equity2.OrderBy(c => c.date).ToList();
             }
-            var VM = new EQComparison();
+            var VM = new EQComparison(); // to return to list through the view to the related view
             VM.FirstEQ = equity1;
             VM.SecondEQ = equity2;
 
             return View(VM);
         }
 
-        public IActionResult ComparisonByDailyEquity(string symbol1 , string symbol2 )
+        public IActionResult ComparisonByDailyEquity(string symbol1 = "AAC", string symbol2 = "AAP") //it allows users to compare two selected symbols based on their daily equity
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
@@ -109,13 +107,13 @@ namespace API_Usage.Controllers
 
             if (symbol1 != null && symbol2 != null)
             {
-                dailyequity1 = GetDailyChart(symbol1);
+                dailyequity1 = GetDailyChart(symbol1);  //it calls getdailychart method which returns the daily equity report
                 dailyequity2 = GetDailyChart2(symbol2);
 
                 dailyequity1 = dailyequity1.OrderBy(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
                 dailyequity2 = dailyequity2.OrderBy(c => c.minute).ToList();
             }
-            var DailyVM = new EQComparison();
+            var DailyVM = new EQComparison(); // to return to list through the view to the related view
             DailyVM.FirstDailyEQ = dailyequity1;
             DailyVM.SecondDailyEQ = dailyequity2;
 
@@ -123,7 +121,7 @@ namespace API_Usage.Controllers
         }
 
 
-        public IActionResult ComparisonByFinancial(string symbol1 , string symbol2 )
+        public IActionResult ComparisonByFinancial(string symbol1 = "AAC", string symbol2 = "AAP") //it allows users to compare two selected symbols based on their financial report
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
@@ -135,20 +133,18 @@ namespace API_Usage.Controllers
 
             if (symbol1 != null && symbol2 != null)
             {
-                financial1 = GetFinancial(symbol1);
+                financial1 = GetFinancial(symbol1); //it calls getfinancial method which returns the financial equity report
                 financial2 = GetFinancial2(symbol2);
-
-                //financial1 = financial1.OrderBy(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
-                //financial2 = financial2.OrderBy(c => c.minute).ToList();
+               
             }
-            var FinancialVM = new EQComparison();
+            var FinancialVM = new EQComparison(); // to return to list through the view to the related view
             FinancialVM.FirstFinancial = financial1;
             FinancialVM.SecondFinancial = financial2;
 
             return View(FinancialVM);
         }
 
-        public IActionResult ComparisonByQuote(string symbol1, string symbol2)
+        public IActionResult ComparisonByQuote(string symbol1 = "AAC", string symbol2 = "AAP") //it allows users to compare two selected symbols based on their Quotes report
         {
             //Set ViewBag variable first
             ViewBag.dbSuccessChart = 0;
@@ -160,11 +156,9 @@ namespace API_Usage.Controllers
 
             if (symbol1 != null && symbol2 != null)
             {
-                quote1 = GetQuote(symbol1);
+                quote1 = GetQuote(symbol1);//it calls getquote method which returns the financial equity report
                 quote2 = GetQuote2(symbol2);
 
-                //financial1 = financial1.OrderBy(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
-                //financial2 = financial2.OrderBy(c => c.minute).ToList();
             }
             var QuoteVM = new EQComparison();
             QuoteVM.FirstQuote = quote1;
@@ -275,7 +269,7 @@ namespace API_Usage.Controllers
       return Equities;
     }
 
-        public List<Equity> GetChart2(string symbol)
+        public List<Equity> GetChart2(string symbol) //this method is used to handle two simultaneous requests for a same API End Point
         {
             // string to specify information to be retrieved from the API
             string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/batch?types=chart&range=1y";
@@ -315,7 +309,7 @@ namespace API_Usage.Controllers
         }
 
 
-        public List<DailyEquity> GetDailyChart(string symbol)
+        public List<DailyEquity> GetDailyChart(string symbol)  //this method returns the list of daily report using the specified API end point
         {
             // string to specify information to be retrieved from the API
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/chart/1d";
@@ -338,13 +332,9 @@ namespace API_Usage.Controllers
             // parse the string into appropriate objects
             if (!Dailycharts.Equals(""))
             {
-                // DailyChartRoot dailyroot = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
-                // new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                //DailyEquities = dailyEquities.dailychart.ToList();
-                DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                
-               // List<DailyEquity> equities = JsonConvert.DeserializeObject<List<DailyEquity>>(/*put your parameters here*/);
-
+                DailyChartRoot dailyroot = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                DailyEquities = dailyroot.dailychart.ToList();
             }
 
             // fix the relations. By default the quotes do not have the company symbol
@@ -357,7 +347,7 @@ namespace API_Usage.Controllers
             return DailyEquities;
         }
 
-        public List<DailyEquity> GetDailyChart2(string symbol)
+        public List<DailyEquity> GetDailyChart2(string symbol) //This Action Method is used for handling two simultaneous requests of the same API end Point
         {
             // string to specify information to be retrieved from the API
             string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/chart/1d";
@@ -396,7 +386,7 @@ namespace API_Usage.Controllers
 
 
 
-        public List<Financial> GetFinancial(string symbol)
+        public List<Financial> GetFinancial(string symbol)  //this action method returns list of financial propperties of the financial API end point
         {
             // string to specify information to be retrieved from the API
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/financials";
@@ -421,9 +411,6 @@ namespace API_Usage.Controllers
                 FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
                   new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 DailyFinancial = financialdailyroot.financial.ToList();
-
-              //  Financial[] financial = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
             }
 
             // fix the relations. By default the quotes do not have the company symbol
@@ -436,7 +423,7 @@ namespace API_Usage.Controllers
             return DailyFinancial;
         }
 
-        public List<Financial> GetFinancial2(string symbol)
+        public List<Financial> GetFinancial2(string symbol) // this action method is used to handle two simultaneous requests from Financial API end point
         {
             // string to specify information to be retrieved from the API
             string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/financials";
@@ -474,7 +461,7 @@ namespace API_Usage.Controllers
         }
 
 
-        public List<Quote> GetQuote(string symbol="AAP")
+        public List<Quote> GetQuote(string symbol) //this action method returns the quote API endpoint 
         {
             // string to specify information to be retrieved from the API
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/quote";
@@ -511,7 +498,7 @@ namespace API_Usage.Controllers
             return DailyQuote;
         }
 
-        public List<Quote> GetQuote2(string symbol)
+        public List<Quote> GetQuote2(string symbol) //this action method is used to handle two simultaneous requests from Quote API
         {
             // string to specify information to be retrieved from the API
             string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/quote";
