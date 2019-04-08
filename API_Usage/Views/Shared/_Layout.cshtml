@@ -9,20 +9,26 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <script type="text/javascript" src="~/lib/chartjs-plugin-annotation-master/chartjs-plugin-annotation.min.js"></script>
   <script type="text/javascript" src="~/js/site.js"></script>
-
+    <style>
+        /*style the active selected tab*/
+        .active {
+            background-color: blue;
+            color: white;
+        }
+    </style>
 </head>
 <body>
   <nav>
       <div class="nav-bar">
-          <a asp-area="" asp-controller="Home" asp-action="Index">Home </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols </a><text> | </text>
+          <a  asp-controller="Home" asp-action="Index">Home </a><text> | </text>
+          <a  asp-area="" asp-controller="Home" asp-action="Symbols">Symbols </a><text> | </text>
           <a asp-area="" asp-controller="Home" asp-action="Chart">Chart </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="ComparisonByEquity">Compare Equities </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="ComparisonByDailyEquity">Compare Daily Equities </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="ComparisonByFinancial">Compare Financial Data </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="ComparisonByQuote">Compare Quotes </a><text> | </text>
+          <a asp-area="" asp-controller="Home" asp-action="ComparisonByEquity">Daily Stock </a><text> | </text>
+          <a asp-area="" asp-controller="Home" asp-action="ComparisonByDailyEquity">Hourly Stock </a><text> | </text>
+          <a asp-area="" asp-controller="Home" asp-action="ComparisonByFinancial">Financial Data </a><text> | </text>
+          <a asp-area="" asp-controller="Home" asp-action="ComparisonByQuote">Quotes </a><text> | </text>
           <a asp-area="" asp-controller="Home" asp-action="About">About </a><text> | </text>
+          <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh </a><text> | </text>
           <a target="_blank" href="https://github.com/mfarokhnia/API_Usage">GitHub </a><text> | </text>
 
 

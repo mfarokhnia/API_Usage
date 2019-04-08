@@ -1,46 +1,103 @@
 ﻿@{
-  ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
+    int Time = DateTime.Now.Hour;
 }
 
-<h2>IEX Trading Application</h2>
-<hr />
 
-<div>
-    <p>
-        This application let's you fetch trading data from IEX via their public
-        <a href="https://iextrading.com/developer/">API</a>.
-        <br />
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols</a> tab fetches symbols data from the
-        <a href="https://iextrading.com/developer/docs/#reference-data">IEX Reference API </a> and displays the results.
-        This data can also be saved in the local database.
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Chart">Chart</a> tab let's you select a Company(symbol) and fetches a quote from
-        <a href="https://iextrading.com/developer/docs/#stocks">IEX Stock API</a>.
-        The quote can also be saved in the local database.
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh</a> tab let's you refresh the local database, that is, remove all its contents.
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="ComparisonByEquity">Compare Equities</a> tab allows you to compare equities of two symbols for the past year
 
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="ComparisonByDailyEquity">Compare Daily Equities</a> tab allows you to compare daily equities of two symbols
+@if ((Time >= 9) && (Time <= 16))
 
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="ComparisonByFinancial">Compare Financial Data</a> tab allows you to compare the financial data about two symbols
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
 
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="ComparisonByQuote">Compare Quotes</a> tab allows you to compare quote data about two symbols
+}
+else
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Red" size="5">Stock Market is Closed</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
 
-    </p>
-  <p>
-    The application demonstrates the following -
-    <ul>
-      <li>Connection to REST API (the example uses IEXTrading, an easy-to-use API that provides stock data)</li>
-      <li>Parsing the Json objects returned from the API</li>
-      <li>Modeling API results as entities</li>
-      <li>Persisting data to a relational database</li>
-    </ul>
-  </p>
+}
 
-</div>
+    <html>
+    <head>
+        <script>
+            function startTime() {
+                var today = new Date();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+                m = checkTime(m);
+                s = checkTime(s);
+                document.getElementById('txt').innerHTML =
+                    h + ":" + m + ":" + s;
+                var t = setTimeout(startTime, 500);
+            }
+            function checkTime(i) {
+                if (i < 10) { i = "0" + i };
+                return i;
+            }
+        </script>
+
+        <style>
+            body {
+                width: 90%;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+
+    <h2>IEX Trading Application</h2>
+    <br /><br />
+    <hr />
+
+    <body onload="startTime()">
+        <div>
+            <p>
+                This application let's you fetch trading/stock data from IEX via their public
+                <a href="https://iextrading.com/developer/">API</a>.
+                <br />
+                <br />
+                The <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols</a> tab fetches symbols data from the
+                <a href="https://iextrading.com/developer/docs/#reference-data">IEX Reference API </a> and displays the results.
+                This data can also be saved in the local database.
+                <br />
+                The <a asp-area="" asp-controller="Home" asp-action="Chart">Chart</a> tab let's you select a Company(symbol) and fetches a quote from
+                <a href="https://iextrading.com/developer/docs/#stocks">IEX Stock API</a>.
+                The quote can also be saved in the local database.
+                <br />
+                The <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh</a> tab let's you refresh the local database, that is, remove all its contents.
+                <br />
+                The <a asp-area="" asp-controller="Home" asp-action="ComparisonByEquity">Daily Stock</a> tab allows you to compare  stocks of two symbols on a day to day basis for the past one year
+
+                <br />
+                The <a asp-area="" asp-controller="Home" asp-action="ComparisonByDailyEquity">Hourly Equities</a> tab allows you to compare hourly stocks of two symbols. Trading hours are from M-F 9:30 AM TO 4 PM
+
+                <br />
+                The <a asp-area="" asp-controller="Home" asp-action="ComparisonByFinancial">Financial Data</a> tab allows you to compare the financial data about two symbols
+
+                <br />
+                The <a asp-area="" asp-controller="Home" asp-action="ComparisonByQuote"> Quotes</a> tab allows you to compare quote data about two symbols
+
+            </p>
+            <p>
+                The application demonstrates the following -
+                <ul>
+                    <li>Connection to REST API (the example uses IEXTrading, an easy-to-use API that provides stock data)</li>
+                    <li>Parsing the Json objects returned from the API</li>
+                    <li>Modeling API results as entities</li>
+                    <li>Persisting data to a relational database</li>
+                </ul>
+            </p>
+
+        </div>
+    </body>
+    </html>

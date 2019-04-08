@@ -1,56 +1,111 @@
 ﻿@model IEnumerable<API_Usage.Models.Company>
 
+
+@{
+
+    int Time = DateTime.Now.Hour;
+}
+
+@if ((Time >= 9) && (Time <= 16))
+
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
+
+}
+else
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Red" size="6">Stock Market is Closed</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
+
+}
+
+<head>
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML =
+                h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };
+            return i;
+        }
+    </script>
+    <style>
+        body {
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
 <h2>Symbols</h2>
-<hr />
+<br /><br />
+<hr /> 
+<body onload="startTime()">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Type
+                </th>
+            </tr>
+        </thead>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        Symbol
-      </th>
-      <th>
-        Name
-      </th>
-      <th>
-        Date
-      </th>
-      <th>
-        Type
-      </th>
-    </tr>
-  </thead>
+        <tbody>
 
-  <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.symbol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.type)
+                    </td>
+                </tr>
+            }
 
-    @foreach (var item in Model)
-    {
-      <tr>
-        <td>
-          @Html.DisplayFor(modelItem => item.symbol)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.date)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.type)
-        </td>
-      </tr>
-    }
-
-    @{
-      Model.Count();
-    }
-    <tr>
-      <td>
-        <a id="dbopt" asp-controller="Home" asp-action="PopulateSymbols"><img src="~/img/button_save-data.png" /></a>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<script>
+            @{
+                Model.Count();
+            }
+            <tr>
+                <td>
+                    <a id="dbopt" asp-controller="Home" asp-action="PopulateSymbols"><img src="~/img/button_save-data.png" /></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
     alertDbSave(@ViewBag.dbSuccessComp);
-</script>
+    </script>
+</body>

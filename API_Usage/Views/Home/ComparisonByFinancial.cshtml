@@ -1,10 +1,51 @@
 ﻿@model EQComparison
 
 @{
-    ViewData["Title"] = "Comparison By Financial";
+
+    int Time = DateTime.Now.Hour;
+}
+
+@if ((Time >= 9) && (Time <= 16))
+
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
+
+}
+else
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Red" size="6">Stock Market is Closed</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
+
 }
 <html>
 <head>
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML =
+                h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };
+            return i;
+        }
+    </script>
+
     <style>
         body {
             width: 90%;
@@ -28,7 +69,7 @@
         }
     </style>
 </head>
-<h2>Comparison By Financial</h2>
+<h2>Compare Financial Data</h2>
 
 <h4>Compare two financial data about two symbols</h4>
 <hr />
@@ -39,95 +80,95 @@
             <p> Symbol 1: <input type="text" id="txtName" name="symbol1" /></p>
             <p> Symbol 2: <input type="text" id="txtName2" name="symbol2" /></p>
             <input type="submit" value="Compare" class="btn btn-default" />
-            <p>The chart below is comparing the two symbols below on @DateTime.Now</p>
+            <p>The chart below is comparing the two symbols below on @DateTime.Now.ToShortDateString()</p>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
             </div>
         </form>
     </div>
 </div>
-<body>
-<table align="center" border="1" style="margin: 0px auto;">
-    <thead>
-        <tr>
-            <th>
-                Symbol
-            </th>
-            <th>
-                Net Income
-            </th>
-            <th>
-                Total Debt
-            </th>
-            <th>
-                Total Cash
-            </th>
-        </tr>
-    </thead>
-
-    <tbody  align="center" style="margin: 0px auto;">
-
-        @foreach (var item in Model.FirstFinancial)
-        {
+<body onload="startTime()">
+    <table align="center" border="1" style="margin: 0px auto;">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.symbol)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.netincome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.totaldebt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.totalcash)
-                </td>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Net Income
+                </th>
+                <th>
+                    Total Debt
+                </th>
+                <th>
+                    Total Cash
+                </th>
             </tr>
-        }
-</table>
+        </thead>
 
-<table align="center" border="1" style="margin: 0px auto;">
-    <thead>
-        <tr>
-            <th>
-                Symbol
-            </th>
-            <th>
-                Net Income
-            </th>
-            <th>
-                Total Debt
-            </th>
-            <th>
-                Total Cash
-            </th>
-        </tr>
-    </thead>
+        <tbody align="center" style="margin: 0px auto;">
 
-    <tbody  align="center" style="margin: 0px auto;">
+            @foreach (var item in Model.FirstFinancial)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.symbol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.netincome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totaldebt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalcash)
+                    </td>
+                </tr>
+            }
+    </table>
 
-        @foreach (var item in Model.SecondFinancial)
-        {
+    <table align="center" border="1" style="margin: 0px auto;">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.symbol)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.netincome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.totaldebt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.totalcash)
-                </td>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Net Income
+                </th>
+                <th>
+                    Total Debt
+                </th>
+                <th>
+                    Total Cash
+                </th>
             </tr>
-        }
-</table>
+        </thead>
+
+        <tbody align="center" style="margin: 0px auto;">
+
+            @foreach (var item in Model.SecondFinancial)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.symbol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.netincome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totaldebt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalcash)
+                    </td>
+                </tr>
+            }
+    </table>
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-    </body>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+</body>
 </html>

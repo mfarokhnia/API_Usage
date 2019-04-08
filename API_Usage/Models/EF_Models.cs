@@ -54,7 +54,7 @@ namespace API_Usage.Models
     public class Financial
     {
         public int  FinancialId { get; set; }
-        public float? grosspropfit { get; set; }
+        public float? grossprofit { get; set; }
         public float? totalrevenue { get; set; }
         public float? netincome { get; set; }
         public float? currentassets { get; set; }

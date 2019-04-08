@@ -1,7 +1,12 @@
 ﻿<html>
 
 <head>
-
+    <style>
+        body {
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
 
 </head>
 </html>
@@ -14,7 +19,9 @@
     <p>
         This is an extension of the IEX Trading application. As a group we thought the current IEX Trading was limited in some form of functionalities. Our Main goal is to provide a comprehensive platfrom through which users are able to compare different stocks.
         The generated platform allow them to choose the stocks and compare them either through daily or annual equities or by the mean of financial attributes of the stocks or real time quotes. In addition to that,
-        we are adding five more API end points to pull stock data including the below:
+        Our enhancement lets the user know if the stock market is opened or closed and a timer on each of the page. Throughout the application, we have enhanced all of the existing Models and Views 
+        to provide a uniform user experience for visitor.
+        We are adding five more API end points to pull stock data including the below:
         <ul>
             <li>
                 /stock/aapl/quote: This gives us the quota data
@@ -67,10 +74,33 @@
         actual database used which is IEXTrading_API. It will then create all the tables and assign them the appropriate keys and constraints defined in each class.
         We designed the database classes in a third normal form to ensure that there are no transitive data in any of the tables. This way, we are able to provide
         a well defined and redundancy-free database architecture.
-    </p>
+        <h4>Core Technologies</h4>
+        <hr />
+        <p>The Core technologies used in this application are as follows:</p>
+        <ul>
+            <li>
+                CSS
+            </li>
+            <li>
+                Javascripts
+            </li>
+            <li>
+                MVC
+            </li>
+            <li>
+                SQL Server
+            </li>
+            <li>
+                Azure
+            </li>
+            <li>
+                HTML
+            </li>
+        </ul>
+
     <h2>Involved Team Members</h2>
     <hr />
-    <p> This section provides breif information about the team memebers involved in enhancing this application</p>
+    <p> This section provides breif information about the team members involved in enhancing this application</p>
     <ul>
         <img src="https://scontent.ftpa1-2.fna.fbcdn.net/v/t1.0-9/31466665_2199102153638729_6829480522497414032_n.jpg?_nc_cat=104&amp;_nc_ht=scontent.ftpa1-2.fna&amp;oh=e2f993041ff14d19794b67d9130e265c&amp;oe=5D4F2984" style="width:100px;height:100px;" />
         <li>
@@ -95,6 +125,5 @@
     </ul>
     <br />
     <p>Thanks for visiting our site.</p>
-    <br />
-    <p>The current date and time is @DateTime.Now</p>
+    <p>The current date is @DateTime.Now.ToShortDateString()</p>
 </body>

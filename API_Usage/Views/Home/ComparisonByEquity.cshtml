@@ -1,13 +1,50 @@
-﻿@model EQComparison 
-
-
+﻿@model EQComparison
 
 @{
-    // ViewData["Title"] = "ComparisonByEquity";
-   // Layout=null;
+
+    int Time = DateTime.Now.Hour;
+}
+
+@if ((Time >= 9) && (Time <= 16))
+
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
+
+}
+else
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Red" size="6">Stock Market is Closed</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
+
 }
 <html>
 <head>
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML =
+                h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };
+            return i;
+        }
+    </script>
     <style>
         body {
             width: 90%;
@@ -21,7 +58,7 @@
         }
 
         table:nth-child(2n) {
-            background-color:beige;
+            background-color: beige;
             color: black;
         }
 
@@ -32,12 +69,12 @@
     </style>
 </head>
 
-<h2>Comparison By Equity</h2>
+<h2>Daily Stock</h2>
 
-<h4>This page compares two symbols side by side so that users can make informed decision on market data</h4>
+<h4>This page compares the daily stock of two symbols side by side for the past one year so that users can make informed decision on market data</h4>
 
- <hr />
 <hr />
+
 
 <div class="row">
     <div class="col-md-4">
@@ -46,7 +83,7 @@
             <p> Symbol 1: <input type="text" id="txtName" name="symbol1" /></p>
             <p> Symbol 2: <input type="text" id="txtName2" name="symbol2" /></p>
             <input type="submit" value="Compare" class="btn btn-default" />
-            <p>The chart below is comparing the two symbols below on @DateTime.Now</p>
+            <p>The chart below is comparing the two symbols below on @DateTime.Now.ToShortDateString()</p>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
             </div>
@@ -54,7 +91,7 @@
     </div>
 </div>
 
-<body>
+<body onload="startTime()">
 
 
     <table align="center" border="1" style="margin: 0px auto;">
@@ -78,7 +115,7 @@
             </tr>
         </thead>
 
-        <tbody  align="center" style="margin: 0px auto;">
+        <tbody align="center" style="margin: 0px auto;">
 
             @foreach (var item in Model.FirstEQ)
             {

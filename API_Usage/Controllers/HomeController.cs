@@ -86,8 +86,8 @@ namespace API_Usage.Controllers
                 equity1 = GetChart(symbol1); //it calls getchart method which returns the annual equity report
                 equity2 = GetChart2(symbol2);
 
-                equity1 = equity1.OrderBy(c => c.date).ToList(); //Make sure the data is in ascending order of date.
-                equity2 = equity2.OrderBy(c => c.date).ToList();
+                equity1 = equity1.OrderByDescending(c => c.date).ToList(); //Make sure the data is in ascending order of date.
+                equity2 = equity2.OrderByDescending(c => c.date).ToList();
             }
             var VM = new EQComparison(); // to return to list through the view to the related view
             VM.FirstEQ = equity1;
@@ -110,8 +110,8 @@ namespace API_Usage.Controllers
                 dailyequity1 = GetDailyChart(symbol1);  //it calls getdailychart method which returns the daily equity report
                 dailyequity2 = GetDailyChart2(symbol2);
 
-                dailyequity1 = dailyequity1.OrderBy(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
-                dailyequity2 = dailyequity2.OrderBy(c => c.minute).ToList();
+                dailyequity1 = dailyequity1.OrderByDescending(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
+                dailyequity2 = dailyequity2.OrderByDescending(c => c.minute).ToList();
             }
             var DailyVM = new EQComparison(); // to return to list through the view to the related view
             DailyVM.FirstDailyEQ = dailyequity1;
@@ -413,10 +413,11 @@ namespace API_Usage.Controllers
             if (!FixFinancial.Equals(""))
             {
                 FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
-                  new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                DailyFinancial = financialdailyroot.financial.ToList();
+                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
-                //  Financial[] financial = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+           //     Financial[] dailyfinancials = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+                DailyFinancial = financialdailyroot.financial.ToList();
             }
 
             // fix the relations. By default the quotes do not have the company symbol

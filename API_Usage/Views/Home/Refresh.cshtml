@@ -1,55 +1,107 @@
 ﻿@model Dictionary<string, int>
 @{
-  ViewData["Title"] = "Refresh";
+
+    int Time = DateTime.Now.Hour;
 }
 
-<h2>Refresh</h2>
-<hr />
+@if ((Time >= 9) && (Time <= 16))
 
-<p>Refreshing the tables, deletes all contents of the tables.</p>
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        Table
-      </th>
-      <th>
-        Records
-      </th>
-      <th>
+}
+else
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Red" size="6">Stock Market is Closed</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
 
-      </th>
-    </tr>
-  </thead>
+}
+<html>
+<head>
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML =
+                h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };
+            return i;
+        }
+    </script>
 
-  <tbody>
-    <tr>
-      <td>
-        All
-      </td>
-      <td>
-        @Model.Values.Sum()
-      </td>
-      <td>
-        <a asp-controller="Home" asp-action="Refresh" asp-route-tableToDel="all">Refresh</a>
-      </td>
-    </tr>
+    <style>
+        body {
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
 
-    @foreach (KeyValuePair<string, int> item in Model)
-    {
-      <tr>
-        <td>
-          @item.Key
-        </td>
-        <td>
-          @item.Value
-        </td>
-        <td>
-          <a asp-controller="Home" asp-action="Refresh" asp-route-tableToDel=@item.Key>Refresh</a>
-        </td>
-      </tr>
-    }
+<body onload="startTime()">
 
-  </tbody>
-</table>
+    <h2>Refreshing the tables, deletes all contents of the tables.</h2>
+    <br /><br /><br />
+    <hr />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Table
+                </th>
+                <th>
+                    Records
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    All
+                </td>
+                <td>
+                    @Model.Values.Sum()
+                </td>
+                <td>
+                    <a asp-controller="Home" asp-action="Refresh" asp-route-tableToDel="all">Refresh</a>
+                </td>
+            </tr>
+
+            @foreach (KeyValuePair<string, int> item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Key
+                    </td>
+                    <td>
+                        @item.Value
+                    </td>
+                    <td>
+                        <a asp-controller="Home" asp-action="Refresh" asp-route-tableToDel=@item.Key>Refresh</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</body>
