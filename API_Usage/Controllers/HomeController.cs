@@ -329,16 +329,19 @@ namespace API_Usage.Controllers
                 var aa = Dailycharts.GetType();
             }
 
-            // parse the string into appropriate objects
-            if (!Dailycharts.Equals(""))
-            {
-                // DailyChartRoot dailyroot = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
-                // new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                //  DailyEquities = dailyroot.dailychart.ToList();
+                if (!Dailycharts.Equals(""))
+                {
+                    DailyChartRoot root = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
+                      new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    DailyEquities = root.dailychart.ToList();
 
-                DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+               // DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
             }
+
+
+
+
 
             // fix the relations. By default the quotes do not have the company symbol
             //  this symbol serves as the foreign key in the database and connects the quote to the company
