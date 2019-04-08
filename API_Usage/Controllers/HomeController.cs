@@ -331,16 +331,11 @@ namespace API_Usage.Controllers
 
                 if (!Dailycharts.Equals(""))
                 {
-                // DailyChartRoot root = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
-                // new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                // DailyEquities = root.dailychart.ToList();
 
                  DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 DailyEquities = dailyEquities.ToList();
 
             }
-
-
 
 
 
@@ -354,10 +349,10 @@ namespace API_Usage.Controllers
             return DailyEquities;
         }
 
-        public List<DailyEquity> GetDailyChart2(string symbol) //This Action Method is used for handling two simultaneous requests of the same API end Point
+        public List<DailyEquity> GetDailyChart2(string symbol2) //This Action Method is used for handling two simultaneous requests of the same API end Point
         {
             // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/chart/1d";
+            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol2 + "/chart/1d";
 
             // initialize objects needed to gather data
             string Dailycharts = "";
@@ -371,32 +366,33 @@ namespace API_Usage.Controllers
             if (response.IsSuccessStatusCode)
             {
                 Dailycharts = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var aa = Dailycharts.GetType();
             }
 
             // parse the string into appropriate objects
             if (!Dailycharts.Equals(""))
             {
-                IEnumerable<DailyChartRoot> dailyroot = JsonConvert.DeserializeObject<IEnumerable<DailyChartRoot>>(Dailycharts,
-                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                // DailyEquities = dailyroot.dailychart.ToList();
+
+                DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                DailyEquities = dailyEquities.ToList();
+
             }
 
             // fix the relations. By default the quotes do not have the company symbol
             //  this symbol serves as the foreign key in the database and connects the quote to the company
             foreach (DailyEquity Equity in DailyEquities)
             {
-                Equity.symbol = symbol;
+                Equity.symbol = symbol2;
             }
 
             return DailyEquities;
         }
 
-
-
-        public List<Financial> GetFinancial(string symbol)  //this action method returns list of financial propperties of the financial API end point
+        
+        public List<Financial> GetFinancial(string symbol1)  //this action method returns list of financial propperties of the financial API end point
         {
             // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/financials";
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/financials";
 
             // initialize objects needed to gather data
             string FixFinancial = "";
@@ -410,45 +406,7 @@ namespace API_Usage.Controllers
             if (response.IsSuccessStatusCode)
             {
                 FixFinancial = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            }
-
-            // parse the string into appropriate objects
-            if (!FixFinancial.Equals(""))
-            {
-                FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
-                  new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-              //  DailyFinancial = financialdailyroot.financial.ToList();
-
-                //  Financial[] financial = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            }
-
-            // fix the relations. By default the quotes do not have the company symbol
-            //  this symbol serves as the foreign key in the database and connects the quote to the company
-            foreach (Financial financial in DailyFinancial)
-            {
-                financial.symbol = symbol;
-            }
-
-            return DailyFinancial;
-        }
-
-        public List<Financial> GetFinancial2(string symbol) // this action method is used to handle two simultaneous requests from Financial API end point
-        {
-            // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/financials";
-
-            // initialize objects needed to gather data
-            string FixFinancial = "";
-            List<Financial> DailyFinancial = new List<Financial>();
-            httpClient2.BaseAddress = new Uri(IEXTrading_API_PATH2);
-
-            // connect to the API and obtain the response
-            HttpResponseMessage response = httpClient2.GetAsync(IEXTrading_API_PATH2).GetAwaiter().GetResult();
-
-            // now, obtain the Json objects in the response as a string
-            if (response.IsSuccessStatusCode)
-            {
-                FixFinancial = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var aa = FixFinancial.GetType();
             }
 
             // parse the string into appropriate objects
@@ -457,23 +415,62 @@ namespace API_Usage.Controllers
                 FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
                   new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 DailyFinancial = financialdailyroot.financial.ToList();
+
+                //  Financial[] financial = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             }
 
             // fix the relations. By default the quotes do not have the company symbol
             //  this symbol serves as the foreign key in the database and connects the quote to the company
             foreach (Financial financial in DailyFinancial)
             {
-                financial.symbol = symbol;
+                financial.symbol = symbol1;
+            }
+
+            return DailyFinancial;
+        }
+
+        public List<Financial> GetFinancial2(string symbol2) // this action method is used to handle two simultaneous requests from Financial API end point
+        {
+            // string to specify information to be retrieved from the API
+            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol2 + "/financials";
+
+            // initialize objects needed to gather data
+            string FixFinancial = "";
+            List<Financial> DailyFinancial = new List<Financial>();
+            httpClient2.BaseAddress = new Uri(IEXTrading_API_PATH2);
+
+            // connect to the API and obtain the response
+            HttpResponseMessage response = httpClient2.GetAsync(IEXTrading_API_PATH2).GetAwaiter().GetResult();
+
+            // now, obtain the Json objects in the response as a string
+            if (response.IsSuccessStatusCode)
+            {
+                FixFinancial = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            // parse the string into appropriate objects
+            if (!FixFinancial.Equals(""))
+            {
+                FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
+                  new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                 DailyFinancial = financialdailyroot.financial.ToList();
+            }
+
+            // fix the relations. By default the quotes do not have the company symbol
+            //  this symbol serves as the foreign key in the database and connects the quote to the company
+            foreach (Financial financial in DailyFinancial)
+            {
+                financial.symbol = symbol2;
             }
 
             return DailyFinancial;
         }
 
 
-        public List<Quote> GetQuote(string symbol) //this action method returns the quote API endpoint 
+        public List<Quote> GetQuote(string symbol1) //this action method returns the quote API endpoint 
         {
             // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/quote";
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/quote";
 
             // initialize objects needed to gather data
             string CompanyQuote = "";
@@ -501,16 +498,16 @@ namespace API_Usage.Controllers
             //  this symbol serves as the foreign key in the database and connects the quote to the company
             foreach (Quote quotee in DailyQuote)
             {
-                quotee.companysymbol = symbol;
+                quotee.companysymbol = symbol1;
             }
 
             return DailyQuote;
         }
 
-        public List<Quote> GetQuote2(string symbol) //this action method is used to handle two simultaneous requests from Quote API
+        public List<Quote> GetQuote2(string symbol2) //this action method is used to handle two simultaneous requests from Quote API
         {
             // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/quote";
+            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol2 + "/quote";
 
             // initialize objects needed to gather data
             string CompanyQuote = "";
@@ -538,7 +535,7 @@ namespace API_Usage.Controllers
             //  this symbol serves as the foreign key in the database and connects the quote to the company
             foreach (Quote quotee in DailyQuote)
             {
-                quotee.companysymbol = symbol;
+                quotee.companysymbol = symbol2;
             }
 
             return DailyQuote;

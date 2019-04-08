@@ -86,10 +86,10 @@ namespace API_Usage.Models
    }
     public class FinancialRoot
     {
-        public Financial[] financial { get; set; }
+        public List <Financial> financial { get; set; }
     }
     public class QuoteRoot
     {
-        public Quote[] quote { get; set; }
+        public List<Quote> quote { get; set; }
     }
 }
