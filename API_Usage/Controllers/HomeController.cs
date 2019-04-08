@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Linq;
 
+
 /*
  * Acknowledgments
  *  v1 of the project was created for the Fall 2018 class by Dhruv Dhiman, MS BAIS '18
@@ -20,6 +21,7 @@ namespace API_Usage.Controllers
 {
     public class HomeController : Controller
     {
+
         public ApplicationDbContext dbContext;
 
         //Base URL for the IEXTrading API. Method specific URLs are appended to this base URL.
@@ -123,48 +125,62 @@ namespace API_Usage.Controllers
 
         public IActionResult ComparisonByFinancial(string symbol1, string symbol2) //it allows users to compare two selected symbols based on their financial report
         {
-            //Set ViewBag variable first
-            ViewBag.dbSuccessChart = 0;
-
-            List<Financial> financial1 = new List<Financial>();
-            List<Financial> financial2 = new List<Financial>();
-
-
-
-            if (symbol1 != null && symbol2 != null)
+            try
             {
-                financial1 = GetFinancial(symbol1); //it calls getfinancial method which returns the financial equity report
-                financial2 = GetFinancial2(symbol2);
+                //Set ViewBag variable first
+                ViewBag.dbSuccessChart = 0;
 
+                List<Financial> financial1 = new List<Financial>();
+                List<Financial> financial2 = new List<Financial>();
+
+
+
+                if (symbol1 != null && symbol2 != null)
+                {
+                    financial1 = GetFinancial(symbol1); //it calls getfinancial method which returns the financial equity report
+                    financial2 = GetFinancial2(symbol2);
+
+                }
+                var FinancialVM = new EQComparison(); // to return to list through the view to the related view
+                FinancialVM.FirstFinancial = financial1;
+                FinancialVM.SecondFinancial = financial2;
+
+                return View(FinancialVM);
             }
-            var FinancialVM = new EQComparison(); // to return to list through the view to the related view
-            FinancialVM.FirstFinancial = financial1;
-            FinancialVM.SecondFinancial = financial2;
-
-            return View(FinancialVM);
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
         }
 
         public IActionResult ComparisonByQuote(string symbol1, string symbol2) //it allows users to compare two selected symbols based on their Quotes report
         {
-            //Set ViewBag variable first
-            ViewBag.dbSuccessChart = 0;
-
-            List<Quote> quote1 = new List<Quote>();
-            List<Quote> quote2 = new List<Quote>();
-
-
-
-            if (symbol1 != null && symbol2 != null)
+            try
             {
-                quote1 = GetQuote(symbol1);//it calls getquote method which returns the financial equity report
-                quote2 = GetQuote2(symbol2);
+                //Set ViewBag variable first
+                ViewBag.dbSuccessChart = 0;
 
+                List<Quote> quote1 = new List<Quote>();
+                List<Quote> quote2 = new List<Quote>();
+
+
+
+                if (symbol1 != null && symbol2 != null)
+                {
+                    quote1 = GetQuote(symbol1);//it calls getquote method which returns the financial equity report
+                    quote2 = GetQuote2(symbol2);
+
+                }
+                var QuoteVM = new EQComparison();
+                QuoteVM.FirstQuote = quote1;
+                QuoteVM.SecondQuote = quote2;
+
+                return View(QuoteVM);
             }
-            var QuoteVM = new EQComparison();
-            QuoteVM.FirstQuote = quote1;
-            QuoteVM.SecondQuote = quote2;
-
-            return View(QuoteVM);
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
         }
         /****
          * The Chart action calls the GetChart method that returns 1 year's equities for the passed symbol.
@@ -391,43 +407,44 @@ namespace API_Usage.Controllers
         
         public List<Financial> GetFinancial(string symbol1)  //this action method returns list of financial propperties of the financial API end point
         {
-            // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/financials";
+                // string to specify information to be retrieved from the API
+                string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/financials";
 
-            // initialize objects needed to gather data
-            string FixFinancial = "";
-            List<Financial> DailyFinancial = new List<Financial>();
-            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+                // initialize objects needed to gather data
+                string FixFinancial = "";
+                List<Financial> DailyFinancial = new List<Financial>();
+                httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
 
-            // connect to the API and obtain the response
-            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+                // connect to the API and obtain the response
+                HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
 
-            // now, obtain the Json objects in the response as a string
-            if (response.IsSuccessStatusCode)
-            {
-                FixFinancial = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                var aa = FixFinancial.GetType();
-            }
+                // now, obtain the Json objects in the response as a string
+                if (response.IsSuccessStatusCode)
+                {
+                    FixFinancial = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    var aa = FixFinancial.GetType();
+                }
 
-            // parse the string into appropriate objects
-            if (!FixFinancial.Equals(""))
-            {
-                FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
-                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                // parse the string into appropriate objects
+                if (!FixFinancial.Equals(""))
+                {
+                    FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
+                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
-           //     Financial[] dailyfinancials = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    //     Financial[] dailyfinancials = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
-                DailyFinancial = financialdailyroot.financial.ToList();
-            }
+                    DailyFinancial = financialdailyroot.financial.ToList();
+                }
 
-            // fix the relations. By default the quotes do not have the company symbol
-            //  this symbol serves as the foreign key in the database and connects the quote to the company
-            foreach (Financial financial in DailyFinancial)
-            {
-                financial.symbol = symbol1;
-            }
+                // fix the relations. By default the quotes do not have the company symbol
+                //  this symbol serves as the foreign key in the database and connects the quote to the company
+                foreach (Financial financial in DailyFinancial)
+                {
+                    financial.symbol = symbol1;
+                }
 
-            return DailyFinancial;
+                return DailyFinancial;
+            
         }
 
         public List<Financial> GetFinancial2(string symbol2) // this action method is used to handle two simultaneous requests from Financial API end point

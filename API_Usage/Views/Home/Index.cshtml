@@ -52,12 +52,119 @@ else
                 width: 90%;
                 margin: 0 auto;
             }
+
+            /*Hover on Image Zoom*/
+            .hover-zoom {
+                -moz-transition: all 0.3s;
+                -webkit-transition: all 0.3s;
+                transition: all 0.3s
+            }
+
+                .hover-zoom:hover {
+                    -moz-transform: scale(1.1);
+                    -webkit-transform: scale(1.1);
+                    transform: scale(1.5)
+                }
+
+
+            /*set the display property for the images on the slide show*/
+            .DogSlides {
+                display: none;
+            }
+
+            /*Styling to set images side by side*/
+            * {
+                box-sizing: border-box;
+            }
+
+            .column {
+                float: left;
+                width: 10%;
+                padding: 5px;
+            }
+
+            /* Clearfix (clear floats) */
+            .row::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
         </style>
     </head>
 
+
+
     <h2>IEX Trading Application</h2>
-    <br /><br />
+    <div class="row" style="float: left;width:50%;height:12%;min-width:300px;">
+        <div class="column">
+            <a href="https://www.nyse.com/" target="_blank">
+                <img class="hover-zoom" src="http://logok.org/wp-content/uploads/2014/10/NYSE-logo-old.png" alt="NYSE" style="width:100%;">
+            </a>
+
+        </div>
+
+        <div class="column">
+            <a href="https://www.jpmorgan.com/country/US/en/jpmorgan" target="_blank">
+                <img class="hover-zoom" src="http://www.thedisciplinedinvestor.com/blog/wp-content/uploads/2011/10/jpmorgan_logo1.gif" alt="JPMORGAN" style="width:100%;">
+            </a>
+
+        </div>
+        <div class="column">
+            <a href="http://www.londonstockexchange.com/" target="_blank">
+                <img class="hover-zoom" src="http://www.companieshistory.com/wp-content/uploads/2013/07/London-Stock-Exchange.png" alt="London Stock Exchange" style="width:100%;">
+            </a>
+
+        </div>
+        <div class="column">
+            <a href="https://tsx.com/" target="_blank">
+                <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/f/fa/TSX_New.svg/1920px-TSX_New.svg.png" alt="TSX" style="width:100%;">
+            </a>
+
+        </div>
+        <div class="column">
+            <a href="http://english.sse.com.cn/" target="_blank">
+                <img class="hover-zoom" src="https://1.bp.blogspot.com/-Q_FAYhvTKSs/V_HTsY-B7QI/AAAAAAAAIM4/4YIG8CV_bfAXw89Xy0TEHUM09Ns6JfLHwCLcB/s1600/Shanghai.jpg" alt="Shangai Ex" style="width:100%;">
+            </a>
+
+        </div>
+        <div class="column">
+            <a href="https://money.cnn.com/data/world_markets/europe/" target="_blank">
+                <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/Original_Euronext_logo.svg/1200px-Original_Euronext_logo.svg.png" alt="Euroex" style="width:100%;">
+            </a>
+
+        </div>
+        <div class="column">
+            <a href="https://www.goldmansachs.com/" target="_blank">
+                <img class="hover-zoom" src="https://www.financemagnates.com/wp-content/uploads/fxmag/2015/03/m677156.jpg" alt="Goldman Sachs" style="width:100%;">
+            </a>
+
+        </div>
+
+        <div class="column">
+            <a href="https://www.nasdaq.com/" target="_blank">
+
+                <img class="hover-zoom" src="http://logok.org/wp-content/uploads/2014/10/Nasdaq-logo-old-wordmark.png" alt="NASDAQ" style="width:100%;margin-left:10px">
+            </a>
+        </div>
+        <div class="column">
+            <a href="https://www.jpx.co.jp/english/" target="_blank">
+                <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Tokyo_Stock_Exchange.svg/1200px-Tokyo_Stock_Exchange.svg.png" alt="Tokyo Stock Exchange" style="width:100%;margin-left:10px">
+            </a>
+        </div>
+        <div class="column">
+            <a href="https://www.theice.com/" target="_blank">
+                <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Intercontinental_Exchange_logo.svg/1200px-Intercontinental_Exchange_logo.svg.png" alt="ICE" style="width:100%;margin-left:10px">
+            </a>
+        </div>
+
+
+    </div>
+    <br />
+<br />
+    <br />
+    <br />
     <hr />
+
 
     <body onload="startTime()">
         <div>
