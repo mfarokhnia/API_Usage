@@ -331,11 +331,12 @@ namespace API_Usage.Controllers
 
                 if (!Dailycharts.Equals(""))
                 {
-                   DailyChartRoot root = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
-                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                    DailyEquities = root.dailychart.ToList();
+                // DailyChartRoot root = JsonConvert.DeserializeObject<DailyChartRoot>(Dailycharts,
+                // new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                // DailyEquities = root.dailychart.ToList();
 
-               // DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                 DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                DailyEquities = dailyEquities.ToList();
 
             }
 
