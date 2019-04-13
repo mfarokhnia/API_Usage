@@ -4,26 +4,39 @@
     int Time = DateTime.Now.Hour;
 }
 
-@if ((Time >= 9) && (Time <= 16))
-
+@if ((DateTime.Now.DayOfWeek == DayOfWeek.Saturday) || (DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
 {
     <div style="float: right;">
         <p>
-            <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
+            <b><font color="Red" size="5">Weekend!!! Stock Market is Closed</font></b><br />
             <div id="txt" style="float: right; color:Blue;"></div>
         </p>
     </div>
-
 }
 else
 {
-    <div style="float: right;">
-        <p>
-            <b><font color="Red" size="6">Stock Market is Closed</font></b><br />
-            <div id="txt" style="float: right; color:Blue;"></div>
-        </p>
-    </div>
 
+    @if ((Time >= 9) && (Time <= 16))
+
+    {
+        <div style="float: right;">
+            <p>
+                <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
+                <div id="txt" style="float: right; color:Blue;"></div>
+            </p>
+        </div>
+
+    }
+    else
+    {
+        <div style="float: right;">
+            <p>
+                <b><font color="Red" size="5">Stock Market is Closed</font></b><br />
+                <div id="txt" style="float: right; color:Blue;"></div>
+            </p>
+        </div>
+
+    }
 }
 <html>
 <head>

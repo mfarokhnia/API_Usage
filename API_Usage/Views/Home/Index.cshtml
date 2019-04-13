@@ -4,6 +4,17 @@
 }
 
 
+@if ((DateTime.Now.DayOfWeek == DayOfWeek.Saturday) || (DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Red" size="5">Weekend!!! Stock Market is Closed</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
+}
+else
+{
 
 @if ((Time >= 9) && (Time <= 16))
 
@@ -26,185 +37,186 @@ else
     </div>
 
 }
+}
 
-    <html>
-    <head>
-        <script>
-            function startTime() {
-                var today = new Date();
-                var h = today.getHours();
-                var m = today.getMinutes();
-                var s = today.getSeconds();
-                m = checkTime(m);
-                s = checkTime(s);
-                document.getElementById('txt').innerHTML =
-                    h + ":" + m + ":" + s;
-                var t = setTimeout(startTime, 500);
-            }
-            function checkTime(i) {
-                if (i < 10) { i = "0" + i };
-                return i;
-            }
-        </script>
+<html>
+<head>
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML =
+                h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };
+            return i;
+        }
+    </script>
 
-        <style>
-            body {
-                width: 90%;
-                margin: 0 auto;
-            }
+    <style>
+        body {
+            width: 90%;
+            margin: 0 auto;
+        }
 
-            /*Hover on Image Zoom*/
-            .hover-zoom {
-                -moz-transition: all 0.3s;
-                -webkit-transition: all 0.3s;
-                transition: all 0.3s
-            }
+        /*Hover on Image Zoom*/
+        .hover-zoom {
+            -moz-transition: all 0.3s;
+            -webkit-transition: all 0.3s;
+            transition: all 0.3s
+        }
 
-                .hover-zoom:hover {
-                    -moz-transform: scale(1.1);
-                    -webkit-transform: scale(1.1);
-                    transform: scale(1.5)
-                }
-
-
-            /*set the display property for the images on the slide show*/
-            .DogSlides {
-                display: none;
+            .hover-zoom:hover {
+                -moz-transform: scale(1.1);
+                -webkit-transform: scale(1.1);
+                transform: scale(1.5)
             }
 
-            /*Styling to set images side by side*/
-            * {
-                box-sizing: border-box;
-            }
 
-            .column {
-                float: left;
-                width: 10%;
-                padding: 5px;
-            }
+        /*set the display property for the images on the slide show*/
+        .DogSlides {
+            display: none;
+        }
 
-            /* Clearfix (clear floats) */
-            .row::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
-        </style>
-    </head>
+        /*Styling to set images side by side*/
+        * {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            width: 10%;
+            padding: 5px;
+        }
+
+        /* Clearfix (clear floats) */
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+</head>
 
 
 
-    <h2>IEX Trading Application</h2>
-    <div class="row" style="float: left;width:50%;height:12%;min-width:300px;">
-        <div class="column">
-            <a href="https://www.nyse.com/" target="_blank">
-                <img class="hover-zoom" src="http://logok.org/wp-content/uploads/2014/10/NYSE-logo-old.png" alt="NYSE" style="width:100%;">
-            </a>
-
-        </div>
-
-        <div class="column">
-            <a href="https://www.jpmorgan.com/country/US/en/jpmorgan" target="_blank">
-                <img class="hover-zoom" src="http://www.thedisciplinedinvestor.com/blog/wp-content/uploads/2011/10/jpmorgan_logo1.gif" alt="JPMORGAN" style="width:100%;">
-            </a>
-
-        </div>
-        <div class="column">
-            <a href="http://www.londonstockexchange.com/" target="_blank">
-                <img class="hover-zoom" src="http://www.companieshistory.com/wp-content/uploads/2013/07/London-Stock-Exchange.png" alt="London Stock Exchange" style="width:100%;">
-            </a>
-
-        </div>
-        <div class="column">
-            <a href="https://tsx.com/" target="_blank">
-                <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/f/fa/TSX_New.svg/1920px-TSX_New.svg.png" alt="TSX" style="width:100%;">
-            </a>
-
-        </div>
-        <div class="column">
-            <a href="http://english.sse.com.cn/" target="_blank">
-                <img class="hover-zoom" src="https://1.bp.blogspot.com/-Q_FAYhvTKSs/V_HTsY-B7QI/AAAAAAAAIM4/4YIG8CV_bfAXw89Xy0TEHUM09Ns6JfLHwCLcB/s1600/Shanghai.jpg" alt="Shangai Ex" style="width:100%;">
-            </a>
-
-        </div>
-        <div class="column">
-            <a href="https://money.cnn.com/data/world_markets/europe/" target="_blank">
-                <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/Original_Euronext_logo.svg/1200px-Original_Euronext_logo.svg.png" alt="Euroex" style="width:100%;">
-            </a>
-
-        </div>
-        <div class="column">
-            <a href="https://www.goldmansachs.com/" target="_blank">
-                <img class="hover-zoom" src="https://www.financemagnates.com/wp-content/uploads/fxmag/2015/03/m677156.jpg" alt="Goldman Sachs" style="width:100%;">
-            </a>
-
-        </div>
-
-        <div class="column">
-            <a href="https://www.nasdaq.com/" target="_blank">
-
-                <img class="hover-zoom" src="http://logok.org/wp-content/uploads/2014/10/Nasdaq-logo-old-wordmark.png" alt="NASDAQ" style="width:100%;margin-left:10px">
-            </a>
-        </div>
-        <div class="column">
-            <a href="https://www.jpx.co.jp/english/" target="_blank">
-                <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Tokyo_Stock_Exchange.svg/1200px-Tokyo_Stock_Exchange.svg.png" alt="Tokyo Stock Exchange" style="width:100%;margin-left:10px">
-            </a>
-        </div>
-        <div class="column">
-            <a href="https://www.theice.com/" target="_blank">
-                <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Intercontinental_Exchange_logo.svg/1200px-Intercontinental_Exchange_logo.svg.png" alt="ICE" style="width:100%;margin-left:10px">
-            </a>
-        </div>
-
+<h2>IEX Trading Application</h2>
+<div class="row" style="float: left;width:100%;height:12%;min-width:300px;">
+    <div class="column" >
+        <a href="https://www.nyse.com/" target="_blank">
+            <img class="hover-zoom" src="http://logok.org/wp-content/uploads/2014/10/NYSE-logo-old.png" alt="NYSE" style="width:100%;height:130px;">
+        </a>
 
     </div>
-    <br />
+
+    <div class="column">
+        <a href="https://www.jpmorgan.com/country/US/en/jpmorgan" target="_blank">
+            <img class="hover-zoom" src="https://contently.com/wp-content/uploads/2015/09/jpmorgan-chase-co-logo3.png" alt="JPMORGAN" style="width:100%;height:130px;">
+        </a>
+
+    </div>
+    <div class="column"  >
+        <a href="http://www.londonstockexchange.com/" target="_blank">
+            <img class="hover-zoom" src="https://fiu-assets-2-syitaetz61hl2sa.stackpathdns.com/static/use-media-items/37/36207/full-1502x663/56ccaa3f/london-stock-exchange-group.png?resolution=0" alt="London Stock Exchange"  style="width:100%; height:130px;">
+        </a>
+
+    </div>
+    <div class="column">
+        <a href="https://tsx.com/" target="_blank">
+            <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/f/fa/TSX_New.svg/1920px-TSX_New.svg.png" alt="TSX" style="width:100%;height:130px;">
+        </a>
+
+    </div>
+    <div class="column" >
+        <a href="http://english.sse.com.cn/" target="_blank">
+            <img class="hover-zoom" src="http://www.isptoday.nl/wp-content/uploads/2016/07/logo-shanghai-stock-exchange630.jpg" alt="Shangai Ex" style="width:100%;height:130px;">
+        </a>
+
+    </div>
+    <div class="column">
+        <a href="https://money.cnn.com/data/world_markets/europe/" target="_blank">
+            <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/1200px-CNN.svg.png" alt="Euroex" style="width:100%;height:130px;">
+        </a>
+
+    </div>
+    <div class="column">
+        <a href="https://www.goldmansachs.com/" target="_blank">
+            <img class="hover-zoom" src="https://www.financemagnates.com/wp-content/uploads/fxmag/2015/03/m677156.jpg" alt="Goldman Sachs" style="width:100%;height:130px;">
+        </a>
+
+    </div>
+
+    <div class="column">
+        <a href="https://www.nasdaq.com/" target="_blank">
+
+            <img class="hover-zoom" src="http://logok.org/wp-content/uploads/2014/10/Nasdaq-logo-old-wordmark.png" alt="NASDAQ" style="width:100%;height:130px;">
+        </a>
+    </div>
+    <div class="column">
+        <a href="https://www.jpx.co.jp/english/" target="_blank">
+            <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Tokyo_Stock_Exchange.svg/1200px-Tokyo_Stock_Exchange.svg.png" alt="Tokyo Stock Exchange" style="width:100%;height:130px;">
+        </a>
+    </div>
+    <div class="column">
+        <a href="https://www.theice.com/" target="_blank">
+            <img class="hover-zoom" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Intercontinental_Exchange_logo.svg/1200px-Intercontinental_Exchange_logo.svg.png" alt="ICE" style="width:100%;height:130px;">
+        </a>
+    </div>
+
+
+</div>
 <br />
-    <br />
-    <br />
-    <hr />
+<br />
+<br />
+<br />
+<hr />
 
 
-    <body onload="startTime()">
-        <div>
-            <p>
-                This application let's you fetch trading/stock data from IEX via their public
-                <a href="https://iextrading.com/developer/">API</a>.
-                <br />
-                <br />
-                The <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols</a> tab fetches symbols data from the
-                <a href="https://iextrading.com/developer/docs/#reference-data">IEX Reference API </a> and displays the results.
-                This data can also be saved in the local database.
-                <br />
-                The <a asp-area="" asp-controller="Home" asp-action="Chart">Chart</a> tab let's you select a Company(symbol) and fetches a quote from
-                <a href="https://iextrading.com/developer/docs/#stocks">IEX Stock API</a>.
-                The quote can also be saved in the local database.
-                <br />
-                The <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh</a> tab let's you refresh the local database, that is, remove all its contents.
-                <br />
-                The <a asp-area="" asp-controller="Home" asp-action="ComparisonByEquity">Daily Stock</a> tab allows you to compare  stocks of two symbols on a day to day basis for the past one year
+<body onload="startTime()">
+    <div>
+        <p>
+            This application let's you fetch trading/stock data from IEX via their public
+            <a href="https://iextrading.com/developer/">API</a>.
+            <br />
+            <br />
+            The <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols</a> tab fetches symbols data from the
+            <a href="https://iextrading.com/developer/docs/#reference-data">IEX Reference API </a> and displays the results.
+            This data can also be saved in the local database.
+            <br />
+            The <a asp-area="" asp-controller="Home" asp-action="Chart">Chart</a> tab let's you select a Company(symbol) and fetches a quote from
+            <a href="https://iextrading.com/developer/docs/#stocks">IEX Stock API</a>.
+            The quote can also be saved in the local database.
+            <br />
+            The <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh</a> tab let's you refresh the local database, that is, remove all its contents.
+            <br />
+            The <a asp-area="" asp-controller="Home" asp-action="ComparisonByEquity">Daily Stock</a> tab allows you to compare  stocks of two symbols on a day to day basis for the past one year
 
-                <br />
-                The <a asp-area="" asp-controller="Home" asp-action="ComparisonByDailyEquity">Hourly Equities</a> tab allows you to compare hourly stocks of two symbols. Trading hours are from M-F 9:30 AM TO 4 PM
+            <br />
+            The <a asp-area="" asp-controller="Home" asp-action="ComparisonByDailyEquity">Hourly Equities</a> tab allows you to compare hourly stocks of two symbols. Trading hours are from M-F 9:30 AM TO 4 PM
 
-                <br />
-                The <a asp-area="" asp-controller="Home" asp-action="ComparisonByFinancial">Financial Data</a> tab allows you to compare the financial data about two symbols
+            <br />
+            The <a asp-area="" asp-controller="Home" asp-action="ComparisonByFinancial">Financial Data</a> tab allows you to compare the financial data about two symbols
 
-                <br />
-                The <a asp-area="" asp-controller="Home" asp-action="ComparisonByQuote"> Quotes</a> tab allows you to compare quote data about two symbols
+            <br />
+            The <a asp-area="" asp-controller="Home" asp-action="ComparisonByQuote"> Quotes</a> tab allows you to compare quote data about two symbols
 
-            </p>
-            <p>
-                The application demonstrates the following -
-                <ul>
-                    <li>Connection to REST API (the example uses IEXTrading, an easy-to-use API that provides stock data)</li>
-                    <li>Parsing the Json objects returned from the API</li>
-                    <li>Modeling API results as entities</li>
-                    <li>Persisting data to a relational database</li>
-                </ul>
-            </p>
+        </p>
+        <p>
+            The application demonstrates the following -
+            <ul>
+                <li>Connection to REST API (the example uses IEXTrading, an easy-to-use API that provides stock data)</li>
+                <li>Parsing the Json objects returned from the API</li>
+                <li>Modeling API results as entities</li>
+                <li>Persisting data to a relational database</li>
+            </ul>
+        </p>
 
-        </div>
-    </body>
-    </html>
+    </div>
+</body>
+</html>
