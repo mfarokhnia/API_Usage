@@ -18,30 +18,75 @@
     </style>
 </head>
 <body>
-  <nav>
-      <div class="nav-bar">
-          <a  asp-controller="Home" asp-action="Index">Home </a><text> | </text>
-          <a  asp-area="" asp-controller="Home" asp-action="Symbols">Symbols </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="Chart">Chart </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="ComparisonByEquity">Daily Stock </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="ComparisonByDailyEquity">Hourly Stock </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="ComparisonByFinancial">Financial Data </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="ComparisonByQuote">Quotes </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="About">About </a><text> | </text>
-          <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh </a><text> | </text>
-          <a target="_blank" href="https://github.com/mfarokhnia/API_Usage">GitHub </a><text> | </text>
+    <!-- This section provides a running price of tops stocks. data is provided by Trading View -->
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com" rel="noopener" target="_blank"><span class="blue-text"></span></a> </div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+            {
+                "symbols": [
+                    {
+                        "title": "S&P 500",
+                        "proName": "INDEX:SPX"
+                    },
+                    {
+                        "title": "Shanghai Composite",
+                        "proName": "INDEX:XLY0"
+                    },
+                    {
+                        "title": "EUR/USD",
+                        "proName": "FX_IDC:EURUSD"
+                    },
+                    {
+                        "title": "BTC/USD",
+                        "proName": "BITFINEX:BTCUSD"
+                    },
+                    {
+                        "title": "ETH/USD",
+                        "proName": "BITFINEX:ETHUSD"
+                    },
+                    {
+                        "description": "AAP",
+                        "proName": "NYSE:AAP"
+                    },
+                    {
+                        "description": "Microsoft",
+                        "proName": "NASDAQ:MSFT"
+                    },
+                    {
+                        "description": "Amazon",
+                        "proName": "NASDAQ:AMZN"
+                    }
+                ],
+                                "locale": "en"
+            }
+        </script>
+    </div>
+    <!-- TradingView Widget END -->
+    <nav>
+        <div class="nav-bar">
+            <a asp-controller="Home" asp-action="Index">Home </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="Chart">Chart </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="ComparisonByEquity">Daily Stock </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="ComparisonByDailyEquity">Hourly Stock </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="ComparisonByFinancial">Financial Data </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="ComparisonByQuote">Quotes </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="About">About </a><text> | </text>
+            <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh </a><text> | </text>
+            <a target="_blank" href="https://github.com/mfarokhnia/API_Usage">GitHub </a><text> | </text>
 
 
 
-      </div>
-  </nav>
-  <div class="container body-content">
-    @RenderBody()
-    <hr />
-    <footer>
-      <p>Group 7: ISDS, Muma College of Business, University of South Florida</p>
-    </footer>
-  </div>
-  @RenderSection("Scripts", required: false)
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>Group 7: ISDS, Muma College of Business, University of South Florida</p>
+        </footer>
+    </div>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
