@@ -66,19 +66,23 @@ else
     </style>
 </head>
 
-<h2>Chart</h2>
-<h4>Run symbols and save data if the drop down list is empty</h4>
+<h2>Yearly Chart Data for Symbol</h2>
+<h4>Enter the Symbol to get the Chart data</h4>
 <hr />
 
 <body onload="startTime()">
     <form asp-controller="Home" asp-action="Chart" method="get">
-        <select name="symbol">
-            @foreach (var company in Model.Companies)
-            {
-                <option value=@company.symbol selected>@company.name</option>
-            }
-        </select>
-        <input type="submit" value="Get Chart" />
+        <p> Symbol: <input type="text" id="txtName" name="symbol" /><input type="submit" value="Get Chart" /></p>
+        <p> Sample Symbols:
+            <select name="symbol1">
+                @foreach (var company in Model.Companies)
+                {
+                    <option value=@company.symbol selected>@company.symbol</option>
+
+                }
+            </select>
+        </p>
+
     </form>
     @if (Model.Current != null)
     {
