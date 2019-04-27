@@ -251,7 +251,7 @@ namespace API_Usage.Controllers
         public List<Equity> GetChart(string symbol)
         {
             // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/batch?types=chart&range=1y";
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/batch?types=chart&range=3m";
 
             // initialize objects needed to gather data
             string charts = "";
@@ -288,7 +288,7 @@ namespace API_Usage.Controllers
         public List<Equity> GetChart2(string symbol) //this method is used to handle two simultaneous requests for a same API End Point
         {
             // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/batch?types=chart&range=1y";
+            string IEXTrading_API_PATH2 = BASE_URL + "stock/" + symbol + "/batch?types=chart&range=3m";
 
             // initialize objects needed to gather data
             string charts = "";
