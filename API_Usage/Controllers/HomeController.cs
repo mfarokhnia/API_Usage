@@ -153,6 +153,19 @@ namespace API_Usage.Controllers
             return View(companiesEquities);
         }
 
+
+        public IActionResult Trades()
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSucessComp = 0;
+            List<LargestTrade> tra = GetTrade();
+
+            //Save companies in TempData, so they do not have to be retrieved again
+            TempData["Trades"] = JsonConvert.SerializeObject(tra);
+            //TempData["Companies"] = companies;
+
+            return View(tra);
+        }
         /// <summary>
         /// Calls the IEX reference API to get the list of symbols
         /// </summary>
@@ -347,14 +360,14 @@ namespace API_Usage.Controllers
         }
 
         
-        public List<Financial> GetFinancial(string symbol1)  //this action method returns list of financial propperties of the financial API end point
+        public List<LargestTrade> GetTrade(string symbol1)  //this action method returns list of financial propperties of the financial API end point
         {
                 // string to specify information to be retrieved from the API
-                string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/financials";
+                string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/largest-trades";
 
                 // initialize objects needed to gather data
                 string FixFinancial = "";
-                List<Financial> DailyFinancial = new List<Financial>();
+                List<LargestTrade> Tradings = new List<LargestTrade>();
                 httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
 
                 // connect to the API and obtain the response
@@ -370,22 +383,17 @@ namespace API_Usage.Controllers
                 // parse the string into appropriate objects
                 if (!FixFinancial.Equals(""))
                 {
-                    FinancialRoot financialdailyroot = JsonConvert.DeserializeObject<FinancialRoot>(FixFinancial,
+                LargestTradeRoot LargestTradeRoot = JsonConvert.DeserializeObject<LargestTradeRoot>(FixFinancial,
                      new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
-                    //     Financial[] dailyfinancials = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                //     Financial[] dailyfinancials = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
-                    DailyFinancial = financialdailyroot.financial.ToList();
+                Tradings = LargestTradeRoot.Trade.ToList();
                 }
 
-                // fix the relations. By default the quotes do not have the company symbol
-                //  this symbol serves as the foreign key in the database and connects the quote to the company
-                foreach (Financial financial in DailyFinancial)
-                {
-                    financial.symbol = symbol1;
-                }
+    
 
-                return DailyFinancial;
+                return Tradings;
             
         }
 

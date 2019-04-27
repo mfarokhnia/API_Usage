@@ -51,18 +51,14 @@ namespace API_Usage.Models
         public string symbol { get; set; }
     }
 
-    public class Financial
+    public class LargestTrade
     {
-        public int  FinancialId { get; set; }
-        public float? grossprofit { get; set; }
-        public float? totalrevenue { get; set; }
-        public float? netincome { get; set; }
-        public float? currentassets { get; set; }
-        public float? totalliabilities { get; set; }
-        public float? totalcash { get; set; }
-        public float? totaldebt { get; set; }
-        public float? cashflow { get; set; }
-        public string symbol { get; set; }
+        public int price { get; set; }
+        public float? size { get; set; }
+        public float? time { get; set; }
+        public string timeLabel { get; set; }
+        public string venue { get; set; }
+        public string venueName { get; set; }
     }
     public class Quote
     {
@@ -84,9 +80,9 @@ namespace API_Usage.Models
    {
      public List <DailyEquity> dailychart { get; set; }
    }
-    public class FinancialRoot
+    public class LargestTradeRoot
     {
-        public List <Financial> financial { get; set; }
+        public List <LargestTrade> Trade { get; set; }
     }
     public class QuoteRoot
     {
