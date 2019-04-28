@@ -449,7 +449,7 @@ namespace API_Usage.Controllers
         public List<VolumeByVenue> GetVolume(string symbol1)  //this action method returns list of financial propperties of the financial API end point
         {
             // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/delayed-quote";
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/batch?types=delayed-quote";
 
             // initialize objects needed to gather data
             string FixVolume = "";

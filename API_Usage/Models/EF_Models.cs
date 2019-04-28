@@ -64,8 +64,8 @@ namespace API_Usage.Models
 
     public class VolumeByVenue
     {
-        public int VolumeByVenueTd { get; set; }
-        public float volume { get; set; }
+        public int? VolumeByVenueTd { get; set; }
+        public float? volume { get; set; }
         public string Venue { get; set; }
         public string VenueName { get; set; }
         public string Date { get; set; }
