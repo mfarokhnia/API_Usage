@@ -58,7 +58,6 @@ else
             return i;
         }
     </script>
-
     <style>
         body {
             width: 90%;
@@ -82,13 +81,17 @@ else
         }
     </style>
 </head>
-<h2>Compare Quote Data</h2>
 
-<h4>This page allows you to compare two quote data between two symbols</h4>
+<h2>Daily Stock</h2>
+
+<h4>This page compares the daily stock of two symbols side by side for the past three months so that users can make informed decision on market data</h4>
+
 <hr />
+
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ComparisonByQuote" method="get">
+        <form asp-action="ComparisonByEquity" method="get">
             <p> ***To get a list of the symbols please click on the Symbols tab</p>
             <p> Symbol 1: <input type="text" id="txtName" name="symbol1" /></p>
             <p> Symbol 2: <input type="text" id="txtName2" name="symbol2" /></p>
@@ -100,90 +103,76 @@ else
         </form>
     </div>
 </div>
+
 <body onload="startTime()">
 
+
     <table align="center" border="1" style="margin: 0px auto;">
         <thead>
             <tr>
                 <th>
-                    Company Name
+                    Symbol
                 </th>
                 <th>
-                    IEX RealTime Price
+                    Date
                 </th>
                 <th>
-                    Sector
+                    High
                 </th>
                 <th>
-                    QuoteId
+                    Low
+                </th>
+                <th>
+                    Close
                 </th>
             </tr>
         </thead>
 
         <tbody align="center" style="margin: 0px auto;">
 
-            @foreach (var item in Model.FirstQuote)
+            @foreach (var item in Model.FirstVolume)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.companyname)
+                        @Html.DisplayFor(modelItem => item.AvgMarketPercent)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.iexRealtimePrice)
+                        @Html.DisplayFor(modelItem => item.Date)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.sector)
+                        @Html.DisplayFor(modelItem => item.Venue)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.QuoteId)
+                        @Html.DisplayFor(modelItem => item.volume)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VolumeByVenueTd)
                     </td>
                 </tr>
             }
     </table>
 
-    <table align="center" border="1" style="margin: 0px auto;">
-        <thead>
-            <tr>
-                <th>
-                    Company Name
-                </th>
-                <th>
-                    IEX RealTime Price
-                </th>
-                <th>
-                    Sector
-                </th>
-                <th>
-                    QuoteId
-                </th>
-            </tr>
-        </thead>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="ComparisonByEquity">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <!--<input type="submit" value="Create" class="btn btn-default" />-->
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <tbody align="center" style="margin: 0px auto;">
+    <script>
+    alertDbSave(@ViewBag.dbSuccessComp);
+    </script>
 
-            @foreach (var item in Model.SecondQuote)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.companyname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.iexRealtimePrice)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.sector)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.QuoteId)
-                    </td>
-                </tr>
-            }
-    </table>
 
 
 
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }
-</body>>
+
+</body>
 </html>

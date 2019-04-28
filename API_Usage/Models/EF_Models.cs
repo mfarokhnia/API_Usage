@@ -53,12 +53,24 @@ namespace API_Usage.Models
 
     public class LargestTrade
     {
+        public int LargestTradeId { get; set; }
         public int price { get; set; }
         public float? size { get; set; }
         public float? time { get; set; }
         public string timeLabel { get; set; }
         public string venue { get; set; }
         public string venueName { get; set; }
+    }
+
+    public class VolumeByVenue
+    {
+        public int VolumeByVenueTd { get; set; }
+        public float volume { get; set; }
+        public string Venue { get; set; }
+        public string VenueName { get; set; }
+        public string Date { get; set; }
+        public float? MarketPercent { get; set; }
+        public float? AvgMarketPercent { get; set; }
     }
     public class Quote
     {
@@ -88,4 +100,10 @@ namespace API_Usage.Models
     {
         public List<Quote> quote { get; set; }
     }
+
+    public class VolumeRoot
+    {
+        public List<VolumeByVenue> Volumevenue { get; set; }
+    }
+
 }
