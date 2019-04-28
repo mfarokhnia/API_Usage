@@ -154,18 +154,6 @@ namespace API_Usage.Controllers
         }
 
 
-        public IActionResult Trades()
-        {
-            //Set ViewBag variable first
-            ViewBag.dbSucessComp = 0;
-            List<LargestTrade> tra = GetTrade();
-
-            //Save companies in TempData, so they do not have to be retrieved again
-            TempData["Trades"] = JsonConvert.SerializeObject(tra);
-            //TempData["Companies"] = companies;
-
-            return View(tra);
-        }
         /// <summary>
         /// Calls the IEX reference API to get the list of symbols
         /// </summary>
