@@ -247,6 +247,33 @@ namespace API_Usage.Controllers
             return companies;
         }
 
+        public List<VolumeByVenue> GetVolume(string symbol1)  //this action method returns list of financial propperties of the financial API end point
+        {
+            // string to specify information to be retrieved from the API
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/batch?types=delayed-quote";
+
+            string Vloume = "";
+            List<VolumeByVenue> Ivolume = null;
+
+            // connect to the IEXTrading API and retrieve information
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+
+            // read the Json objects in the API response
+            if (response.IsSuccessStatusCode)
+            {
+                Vloume = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            // now, parse the Json strings as C# objects
+            if (!Vloume.Equals(""))
+            {
+                RootObject result = JsonConvert.DeserializeObject<RootObject>(Vloume);
+            }
+
+            return Ivolume;
+        }
+
         /// <summary>
         /// Calls the IEX stock API to get 1 year's chart for the supplied symbol
         /// </summary>
@@ -446,42 +473,6 @@ namespace API_Usage.Controllers
             
         }
 
-        public List<VolumeByVenue> GetVolume(string symbol1)  //this action method returns list of financial propperties of the financial API end point
-        {
-            // string to specify information to be retrieved from the API
-            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/batch?types=delayed-quote";
-
-            // initialize objects needed to gather data
-            string FixVolume = "";
-            List<VolumeByVenue> Volumes = new List<VolumeByVenue>();
-            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
-
-            // connect to the API and obtain the response
-            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
-
-            // now, obtain the Json objects in the response as a string
-            if (response.IsSuccessStatusCode)
-            {
-                FixVolume = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                var aa = FixVolume.GetType();
-            }
-
-            // parse the string into appropriate objects
-            if (!FixVolume.Equals(""))
-            {
-                VolumeRoot VolumeRoot = JsonConvert.DeserializeObject<VolumeRoot>(FixVolume,
-                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
-                //     Financial[] dailyfinancials = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
-                Volumes = VolumeRoot.Volumevenue.ToList();
-            }
-
-
-
-            return Volumes;
-
-        }
 
 
 
