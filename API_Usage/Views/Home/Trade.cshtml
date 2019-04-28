@@ -91,10 +91,9 @@ else
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ComparisonByEquity" method="get">
+        <form asp-action="Trade" method="get">
             <p> ***To get a list of the symbols please click on the Symbols tab</p>
             <p> Symbol 1: <input type="text" id="txtName" name="symbol1" /></p>
-            <p> Symbol 2: <input type="text" id="txtName2" name="symbol2" /></p>
             <input type="submit" value="Compare" class="btn btn-default" />
             <p>The chart below is comparing the two symbols below on @DateTime.Now.ToShortDateString()</p>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
