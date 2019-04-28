@@ -153,7 +153,68 @@ namespace API_Usage.Controllers
             return View(companiesEquities);
         }
 
+        public IActionResult Trade(string symbol1) //it allows users to compare two selected symbols based on their daily equity
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSuccessChart = 0;
 
+            List<LargestTrade> largesttrade1 = new List<LargestTrade>();
+           //List<LargestTrade> largesttrade2 = new List<LargestTrade>();
+
+
+            if (symbol1 != null )
+            {
+                largesttrade1 = GetTrade(symbol1);  //it calls getdailychart method which returns the daily equity report
+                //dailyequity2 = GetDailyChart2(symbol2);
+
+                largesttrade1 = largesttrade1.OrderByDescending(c => c.time).ToList(); //Make sure the data is in ascending order of date.
+               // dailyequity2 = dailyequity2.OrderByDescending(c => c.minute).ToList();
+            }
+            var DailyTR = new EQComparison(); // to return to list through the view to the related view
+            DailyTR.FirstTrade = largesttrade1;
+            //DailyTR.SecondDailyEQ = dailyequity2;
+
+            return View(DailyTR);
+        }
+
+        public IActionResult Volume(string symbol1) //it allows users to compare two selected symbols based on their daily equity
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSuccessChart = 0;
+
+            List<VolumeByVenue> DailyVolume1 = new List<VolumeByVenue>();
+            //List<LargestTrade> largesttrade2 = new List<LargestTrade>();
+
+
+            if (symbol1 != null)
+            {
+                DailyVolume1 = GetVolume(symbol1);  //it calls getdailychart method which returns the daily equity report
+                //dailyequity2 = GetDailyChart2(symbol2);
+
+                DailyVolume1 = DailyVolume1.OrderByDescending(c => c.Date).ToList(); //Make sure the data is in ascending order of date.
+                                                                                       // dailyequity2 = dailyequity2.OrderByDescending(c => c.minute).ToList();
+            }
+            var DailyVL = new EQComparison(); // to return to list through the view to the related view
+            DailyVL.FirstVolume = DailyVolume1;
+            //DailyTR.SecondDailyEQ = dailyequity2;
+
+            return View(DailyVL);
+        }
+
+
+
+        //public IActionResult Trades()
+        //{
+        //    //Set ViewBag variable first
+        //    ViewBag.dbSucessComp = 0;
+        //    List<LargestTrade> tra = GetTrade();
+
+        //    //Save companies in TempData, so they do not have to be retrieved again
+        //    TempData["Trades"] = JsonConvert.SerializeObject(tra);
+        //    //TempData["Companies"] = companies;
+
+        //    return View(tra);
+        //}
         /// <summary>
         /// Calls the IEX reference API to get the list of symbols
         /// </summary>
@@ -354,7 +415,7 @@ namespace API_Usage.Controllers
                 string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/largest-trades";
 
                 // initialize objects needed to gather data
-                string FixFinancial = "";
+                string FixTrade = "";
                 List<LargestTrade> Tradings = new List<LargestTrade>();
                 httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
 
@@ -364,14 +425,14 @@ namespace API_Usage.Controllers
                 // now, obtain the Json objects in the response as a string
                 if (response.IsSuccessStatusCode)
                 {
-                    FixFinancial = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    var aa = FixFinancial.GetType();
+                    FixTrade = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    var aa = FixTrade.GetType();
                 }
 
                 // parse the string into appropriate objects
-                if (!FixFinancial.Equals(""))
+                if (!FixTrade.Equals(""))
                 {
-                LargestTradeRoot LargestTradeRoot = JsonConvert.DeserializeObject<LargestTradeRoot>(FixFinancial,
+                LargestTradeRoot LargestTradeRoot = JsonConvert.DeserializeObject<LargestTradeRoot>(FixTrade,
                      new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
                 //     Financial[] dailyfinancials = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -383,6 +444,43 @@ namespace API_Usage.Controllers
 
                 return Tradings;
             
+        }
+
+        public List<VolumeByVenue> GetVolume(string symbol1)  //this action method returns list of financial propperties of the financial API end point
+        {
+            // string to specify information to be retrieved from the API
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol1 + "/delayed-quote";
+
+            // initialize objects needed to gather data
+            string FixVolume = "";
+            List<VolumeByVenue> Volumes = new List<VolumeByVenue>();
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+
+            // connect to the API and obtain the response
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+
+            // now, obtain the Json objects in the response as a string
+            if (response.IsSuccessStatusCode)
+            {
+                FixVolume = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var aa = FixVolume.GetType();
+            }
+
+            // parse the string into appropriate objects
+            if (!FixVolume.Equals(""))
+            {
+                VolumeRoot VolumeRoot = JsonConvert.DeserializeObject<VolumeRoot>(FixVolume,
+                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+                //     Financial[] dailyfinancials = JsonConvert.DeserializeObject<Financial[]>(FixFinancial, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+                Volumes = VolumeRoot.Volumevenue.ToList();
+            }
+
+
+
+            return Volumes;
+
         }
 
 
