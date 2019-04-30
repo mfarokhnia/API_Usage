@@ -64,20 +64,9 @@ else
             width: 90%;
             margin: 0 auto;
         }
-
-        table:first-child {
-           
-            color: black;
-            margin-right: 1%;
-        }
-
-        table:nth-child(2n) {
-          
-            color: black;
-        }
-
+                     
         table {
-            width: 49%;
+            width: 100%;
             float: left;
         }
     </style>
@@ -85,7 +74,7 @@ else
 
 <h2>Dividends</h2>
 
-<h4>Run symbols and save data if the drop down list is empty. Please contact IEX Trading if you have any questions about your data !</h4>
+<h4>Enter the Symbol to get the Dividend data !</h4>
 
 <hr />
 
@@ -93,179 +82,161 @@ else
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Dividend" method="get">
-            <p> Symbol: <input type="text" id="txtName" name="symbol" /></p>
+            <p> Symbol: <input type="text" id="txtName" name="symbol" /><input type="submit" value="Get Dividends" /></p>
 
-            <input type="submit" value="Get Dividends" />
+            
         </form>
     </div>
 </div>
+
 <body onload="startTime()">
 
+    <div style="float: center;">
 
-    @if (Model.Current != null)
 
-    {
+        @if (Model.Current != null)
 
-        var equity = Model.Current;
+        {
 
-        <hr />
+            var equity = Model.Current;
 
-        <table align="center" border="1" style="margin: 0px auto;">
 
-            <tbody align="center" style="margin: 0px auto;">
+            <table align="right" border="1"   style="margin: 0px auto;">
 
-                <tr>
+                <tbody align="right">
 
-                    <td>
+                    <tr>
 
-                        Dividends Data
+                        <td>
 
-                        <table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        Symbol
+                                    </td>
+                                    <td>
+                                        @equity.symbol
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        EX Date
+                                    </td>
+                                    <td>
+                                        @equity.exDate
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Payment Date
+                                    </td>
+                                    <td>
 
-                            <tr>
+                                        @equity.paymentDate
 
-                                <td>
+                                    </td>
 
-                                    Symbol
+                                </tr>
 
-                                </td>
+                                <tr>
 
-                                <td>
+                                    <td>
 
-                                    @equity.symbol
+                                        Record Date
 
-                                </td>
+                                    </td>
 
-                            </tr>
+                                    <td>
 
-                            <tr>
+                                        @equity.recordDate
 
-                                <td>
+                                    </td>
 
-                                    EX Date
+                                </tr>
 
-                                </td>
+                                <tr>
 
-                                <td>
+                                    <td>
 
-                                    @equity.exDate
+                                        Declared Date
 
-                                </td>
+                                    </td>
 
-                            </tr>
+                                    <td>
 
-                            <tr>
+                                        @equity.declaredDate
 
-                                <td>
+                                    </td>
 
-                                    Payment Date
+                                </tr>
 
-                                </td>
+                                <tr>
 
-                                <td>
+                                    <td>
 
-                                    @equity.paymentDate
+                                        Amount
 
-                                </td>
+                                    </td>
 
-                            </tr>
+                                    <td>
 
-                            <tr>
+                                        @equity.amount
 
-                                <td>
+                                    </td>
 
-                                    Record Date
+                                </tr>
 
-                                </td>
+                                <tr>
 
-                                <td>
+                                    <td>
 
-                                    @equity.recordDate
+                                        Type
 
-                                </td>
+                                    </td>
 
-                            </tr>
+                                    <td>
 
-                            <tr>
+                                        @equity.type
 
-                                <td>
+                                    </td>
 
-                                    Declared Date
+                                </tr>
 
-                                </td>
+                                <tr>
 
-                                <td>
+                                    <td>
 
-                                    @equity.declaredDate
+                                        Qualified
 
-                                </td>
+                                    </td>
 
-                            </tr>
+                                    <td>
 
-                            <tr>
+                                        @equity.qualified
 
-                                <td>
+                                    </td>
 
-                                    Amount
+                                </tr>
 
-                                </td>
+                            </table>
 
-                                <td>
+                        </td>
 
-                                    @equity.amount
 
-                                </td>
+                    </tr>
 
-                            </tr>
+                </tbody>
 
-                            <tr>
+            </table>
 
-                                <td>
+        }
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
 
-                                    Type
+    </div>
 
-                                </td>
-
-                                <td>
-
-                                    @equity.type
-
-                                </td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td>
-
-                                    Qualified
-
-                                </td>
-
-                                <td>
-
-                                    @equity.qualified
-
-                                </td>
-
-                            </tr>
-
-                        </table>
-
-                    </td>
-
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    }
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
-
+    
 </body>
 </html>
 
