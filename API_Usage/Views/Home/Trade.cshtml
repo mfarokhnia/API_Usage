@@ -1,177 +1,215 @@
-﻿@model EQComparison
+﻿
+
+@model TradeVM
+
+
 
 @{
 
-    int Time = DateTime.Now.Hour;
+    ViewData["Title"] = "Trades";
+
 }
 
-@if ((DateTime.Now.DayOfWeek == DayOfWeek.Saturday) || (DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
-{
-    <div style="float: right;">
-        <p>
-            <b><font color="Red" size="5">Weekend!!! Stock Market is Closed</font></b><br />
-            <div id="txt" style="float: right; color:Blue;"></div>
-        </p>
-    </div>
-}
-else
-{
 
-    @if ((Time >= 9) && (Time <= 16))
 
-    {
-        <div style="float: right;">
-            <p>
-                <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
-                <div id="txt" style="float: right; color:Blue;"></div>
-            </p>
-        </div>
+<h2>Largest Trades</h2>
 
-    }
-    else
-    {
-        <div style="float: right;">
-            <p>
-                <b><font color="Red" size="5">Stock Market is Closed</font></b><br />
-                <div id="txt" style="float: right; color:Blue;"></div>
-            </p>
-        </div>
-
-    }
-}
-<html>
-<head>
-    <script>
-        function startTime() {
-            var today = new Date();
-            var h = today.getHours();
-            var m = today.getMinutes();
-            var s = today.getSeconds();
-            m = checkTime(m);
-            s = checkTime(s);
-            document.getElementById('txt').innerHTML =
-                h + ":" + m + ":" + s;
-            var t = setTimeout(startTime, 500);
-        }
-        function checkTime(i) {
-            if (i < 10) { i = "0" + i };
-            return i;
-        }
-    </script>
-    <style>
-        body {
-            width: 90%;
-            margin: 0 auto;
-        }
-
-        table:first-child {
-            background-color: beige;
-            color: white;
-            margin-right: 1%;
-        }
-
-        table:nth-child(2n) {
-            background-color: beige;
-            color: black;
-        }
-
-        table {
-            width: 49%;
-            float: left;
-        }
-    </style>
-</head>
-
-<h2>Daily Stock</h2>
-
-<h4>This page compares the daily stock of two symbols side by side for the past three months so that users can make informed decision on market data</h4>
+<h4>Run symbols and save data if the drop down list is empty. Please contact IEX Trading if you have any questions about your data !</h4>
 
 <hr />
 
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Trade" method="get">
-            <p> ***To get a list of the symbols please click on the Symbols tab</p>
-            <p> Symbol 1: <input type="text" id="txtName" name="symbol1" /></p>
-            <input type="submit" value="Compare" class="btn btn-default" />
-            <p>The chart below is comparing the two symbols below on @DateTime.Now.ToShortDateString()</p>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-            </div>
-        </form>
-    </div>
-</div>
 
-<body onload="startTime()">
+<form asp-controller="Trade" asp-action="Trade" method="get">
+
+    <select name="symbol">
+
+        @foreach (var company in Model.Companies)
+
+        {
+
+            <option value=@company.symbol selected>@company.name</option>
+
+        }
+
+    </select>
+
+    <input type="submit" value="Get Largest Trades" />
+
+</form>
 
 
-    <table align="center" border="1" style="margin: 0px auto;">
-        <thead>
+
+
+
+@if (Model.Current != null)
+
+{
+
+    var equity = Model.Current;
+
+    <hr />
+
+    <table>
+
+        <tbody>
+
             <tr>
-                <th>
-                    Symbol
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-                    High
-                </th>
-                <th>
-                    Low
-                </th>
-                <th>
-                    Close
-                </th>
+
+                <td>
+
+                    Largest Trades Data
+
+                    <table>
+
+                        <tr>
+
+                            <td>
+
+                                Symbol
+
+                            </td>
+
+                            <td>
+
+                                @equity.symbol
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                Price
+
+                            </td>
+
+                            <td>
+
+                                @equity.price
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                Size
+
+                            </td>
+
+                            <td>
+
+                                @equity.size
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                Time
+
+                            </td>
+
+                            <td>
+
+                                @equity.time
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                Time Label
+
+                            </td>
+
+                            <td>
+
+                                @equity.timeLabel
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                Venue
+
+                            </td>
+
+                            <td>
+
+                                @equity.venue
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+
+                                Venue Name
+
+                            </td>
+
+                            <td>
+
+                                @equity.venueName
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </td>
+
+                <td>
+
+                    @*<div>
+
+                          <canvas id="myChart" height="500" width="800"></canvas>
+
+                        </div>*@
+
+                </td>
+
+                <td>
+
+                    <a asp-controller="Trade" asp-action="SaveTrades" asp-route-symbol="@Model.Current.symbol">
+
+                        <img src="~/img/button_save-data.png" />
+
+                    </a>
+
+                </td>
+
             </tr>
-        </thead>
 
-        <tbody align="center" style="margin: 0px auto;">
+        </tbody>
 
-            @foreach (var item in Model.FirstTrade)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LargestTradeId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.size)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.timeLabel)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.venue)
-                    </td>
-                </tr>
-            }
     </table>
 
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Trade">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <!--<input type="submit" value="Create" class="btn btn-default" />-->
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-    alertDbSave(@ViewBag.dbSuccessComp);
-    </script>
-
-   
+}
 
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
 
-</body>
-</html>
+<script>
+
+    alertDbSave(@ViewBag.dbSuccessChart);
+
+</script>

@@ -80,6 +80,33 @@ namespace API_Usage.Models
         public virtual Company Company { get; set; }
 
     }
+
+
+    public class Trade
+
+    {
+
+        public int TradeId { get; set; }
+
+        public decimal price { get; set; }
+
+        public int size { get; set; }
+
+        public string time { get; set; }
+
+        public string timeLabel { get; set; }
+
+        public string venue { get; set; }
+
+        public string venueName { get; set; }
+
+        public string symbol { get; set; }
+
+        public virtual Company Company { get; set; }
+
+    }
+
+
     public class ChartRoot
   {
     public Equity[] chart { get; set; }
@@ -99,6 +126,26 @@ namespace API_Usage.Models
         public Dividend Current { get; set; }
 
         public DividendVM(List<Company> companies, Dividend current)
+
+        {
+
+            Companies = companies;
+
+            Current = current;
+
+        }
+   
+
+    }
+    public class TradeVM
+
+    {
+
+        public List<Company> Companies { get; set; }
+
+        public Trade Current { get; set; }
+
+        public TradeVM(List<Company> companies, Trade current)
 
         {
 

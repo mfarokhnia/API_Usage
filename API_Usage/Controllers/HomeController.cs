@@ -57,69 +57,198 @@ namespace API_Usage.Controllers
         {
             return View();
         }
-
-        //Dividends
+/*--------------------------------------------------------------Dividends API Endpoint---------------------------------------------------------------------------*/
+/*------------------------------------------------------------- Dividend Action Method---------------------------------------------------------------------------*/        
+   
+        //Dividends API
         public IActionResult Dividend(string symbol)
 
-        {            //Set ViewBag variable first
-                        ViewBag.dbSuccessChart = 0;
-                        List<Dividend> diviends = new List<Dividend>();
+        {       
+            //Viewbag initiation
+             ViewBag.dbSuccessChart = 0;
+             List<Dividend> dividends = new List<Dividend>();
                        
             if (symbol != null)
                             {
-                                diviends = GetDividends(symbol);
+                                dividends = GetDividends(symbol);
                             }
                        
-            DividendVM diviendViewModel = getDividendVM(diviends);
-                                             return View(diviendViewModel);
-                    }
-               
+            DividendVM ReturnedDividends = getDividendVM(dividends);
+            return View(ReturnedDividends);
+        }
+        /*------------------------------------------------------------GetDividend Method----------------------------------------------------------------------------------*/
+
         public List<Dividend> GetDividends(string symbol)
                     {
-                        // string to specify information to be retrieved from the API
-                                    string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/dividends/5y";
-                                             // initialize objects needed to gather data
-                                                         string dividends = "";
-                        List<Dividend> Dividends = new List<Dividend>();
-                        httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
-                       
+            // used to retrieve information from API
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/dividends/5y";
+            // initialize objects needed to gather data
+            string dividends = "";
+            List<Dividend> DividendList = new List<Dividend>();
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+
             // connect to the API and obtain the response
-                        HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
-                       
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+
             // now, obtain the Json objects in the response as a string
-                        if (response.IsSuccessStatusCode)
-                            {
-                                dividends = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                           }
-                                               
+            if (response.IsSuccessStatusCode)
+            {
+                dividends = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
             // parse the string into appropriate objects
-                        if (!dividends.Equals(""))
-                            {
-                                Dividends = JsonConvert.DeserializeObject<List<Dividend>>(dividends);
-                            }
-                                               
+
+            if (!dividends.Equals(""))
+            {
+                DividendList = JsonConvert.DeserializeObject<List<Dividend>>(dividends);
+            }
+
             // fix the relations. By default the quotes do not have the company symbol
-                        foreach (Dividend Dividend in Dividends)
-                            {
-                                Dividend.symbol = symbol;
-                            }
-             return Dividends;
-                    }
+
+            foreach (Dividend Dividend in DividendList)
+            {
+                Dividend.symbol = symbol;
+            }
+            return DividendList;
+        }
                
         public DividendVM getDividendVM(List<Dividend> dividends)
-                    {
-                        List<Company> companies = dbContext.Companies.ToList();
-                       
-            if (dividends.Count == 0)
-                            {
-                                return new DividendVM(companies, null);
-                            }
 
+        {
+            List<Company> companies = dbContext.Companies.ToList();
+            if (dividends.Count == 0)
+            {
+                return new DividendVM(companies, null);
+            }
             Dividend current = dividends.Last();
-                        return new DividendVM(companies, dividends.Last()); 
-                    }
-               
-        
+            return new DividendVM(companies, dividends.Last());
+        }
+
+/*-----------------------------------------------------------Largest Trade API Endpoint---------------------------------------------------------------------*/
+/*--------------------------------------------------------------Trade Action Method------------------------------------------------------------------------*/
+        public IActionResult Trade(string symbol)
+
+        {
+
+            //Set ViewBag variable first
+
+            ViewBag.dbSuccessChart = 0;
+
+            List<Trade> trades = new List<Trade>();
+
+
+
+            if (symbol != null)
+
+            {
+
+                trades = GetTrades(symbol);
+
+            }
+
+
+
+            TradeVM tradeViewModel = getTradeVM(trades);
+
+
+
+            return View(tradeViewModel);
+
+        }
+
+
+
+        public List<Trade> GetTrades(string symbol)
+
+        {
+
+            // string to specify information to be retrieved from the API
+
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/largest-trades";
+
+
+
+            // initialize objects needed to gather data
+
+            string trades = "";
+
+            List<Trade> Trades = new List<Trade>();
+
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+
+
+
+            // connect to the API and obtain the response
+
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+
+
+
+            // now, obtain the Json objects in the response as a string
+
+            if (response.IsSuccessStatusCode)
+
+            {
+
+                trades = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+            }
+
+
+
+            // parse the string into appropriate objects
+
+            if (!trades.Equals(""))
+
+            {
+
+                Trades = JsonConvert.DeserializeObject<List<Trade>>(trades);
+
+            }
+
+
+
+            // fix the relations. By default the quotes do not have the company symbol
+
+            //  this symbol serves as the foreign key in the database and connects the quote to the company
+
+            foreach (Trade Trade in Trades)
+
+            {
+
+                Trade.symbol = symbol;
+
+            }
+
+
+
+            return Trades;
+
+        }
+
+
+
+        public TradeVM getTradeVM(List<Trade> trades)
+
+        {
+
+            List<Company> companies = dbContext.Companies.ToList();
+
+
+
+            if (trades.Count == 0)
+
+            {
+
+                return new TradeVM(companies, null);
+
+            }
+
+            Trade current = trades.Last();
+
+            return new TradeVM(companies, trades.Last());
+
+        }
         /****
          * The Symbols action calls the GetSymbols method that returns a list of Companies.
          * This list of Companies is passed to the Symbols View.
