@@ -11,13 +11,6 @@ namespace API_Usage.Models
         public List<Equity> SecondEQ { set; get; }
         public List<DailyEquity> FirstDailyEQ { set; get; }
         public List<DailyEquity> SecondDailyEQ { set; get; }
-        //public List<Financial> FirstFinancial { set; get; }
-        //public List<Financial> SecondFinancial { set; get; }
-       // public List<Quote> FirstQuote { set; get; }
-        //public List<Quote> SecondQuote { set; get; }
-        public List<LargestTrade> FirstTrade { set; get; }
-        public List<LargestTrade> SecondTrade { set; get; }
-        public List<VolumeByVenue> FirstVolume { set; get; }
-        public List<VolumeByVenue> SecondVolume { set; get; }
+
     }
 }

@@ -51,39 +51,36 @@ namespace API_Usage.Models
         public string symbol { get; set; }
     }
 
-    public class LargestTrade
-    {
-        public int LargestTradeId { get; set; }
-        public int price { get; set; }
-        public float? size { get; set; }
-        public float? time { get; set; }
-        public string timeLabel { get; set; }
-        public string venue { get; set; }
-        public string venueName { get; set; }
-    }
+    public class Dividend
 
-    public class VolumeByVenue
     {
-        public int? VolumeByVenueTd { get; set; }
-        public float? volume { get; set; }
-        public string Venue { get; set; }
-        public string VenueName { get; set; }
-        public string Date { get; set; }
-        public float? MarketPercent { get; set; }
-        public float? AvgMarketPercent { get; set; }
-    }
-    public class Quote
-    {
-        public int QuoteId { get; set; }
-        public string companysymbol { get; set; }
-        public string companyname { get; set; }
-        public string sector { get; set; }
-        public float iexRealtimePrice { get; set; }
-        public float iexRealtimeSize { get; set; }
-        public float YTDchange { get; set; }
-    }
 
-  public class ChartRoot
+        public int DividendId { get; set; }
+
+        public string exDate { get; set; }
+
+        public string paymentDate { get; set; }
+
+        public string recordDate { get; set; }
+
+        public string declaredDate { get; set; }
+
+        public decimal amount { get; set; }
+
+        public string flag { get; set; }
+
+        public string type { get; set; }
+
+        public string qualified { get; set; }
+
+        public string indicated { get; set; }
+
+        public string symbol { get; set; }
+
+        public virtual Company Company { get; set; }
+
+    }
+    public class ChartRoot
   {
     public Equity[] chart { get; set; }
   }
@@ -92,18 +89,25 @@ namespace API_Usage.Models
    {
      public List <DailyEquity> dailychart { get; set; }
    }
-    public class LargestTradeRoot
-    {
-        public List <LargestTrade> Trade { get; set; }
-    }
-    public class QuoteRoot
-    {
-        public List<Quote> quote { get; set; }
-    }
 
-    public class VolumeRoot
+    public class DividendVM
+
     {
-        public List<VolumeByVenue> Volumevenue { get; set; }
+
+        public List<Company> Companies { get; set; }
+
+        public Dividend Current { get; set; }
+
+        public DividendVM(List<Company> companies, Dividend current)
+
+        {
+
+            Companies = companies;
+
+            Current = current;
+
+        }
+
     }
 
 }

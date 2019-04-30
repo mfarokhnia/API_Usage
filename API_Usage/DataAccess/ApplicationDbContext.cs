@@ -12,7 +12,6 @@ namespace API_Usage.DataAccess
         public DbSet<DailyEquity> DailyEquities {get;set;}
         //public DbSet<Financial> Financials { get; set; }
         //public DbSet<Quote> Quotes { get; set; }
-        public DbSet<LargestTrade> Quotes { get; set; }
 
     }
 }
