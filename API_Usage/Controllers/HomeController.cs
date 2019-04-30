@@ -76,34 +76,31 @@ namespace API_Usage.Controllers
             DividendVM ReturnedDividends = getDividendVM(dividends);
             return View(ReturnedDividends);
         }
-        /*------------------------------------------------------------GetDividend Method----------------------------------------------------------------------------------*/
+        /*------------------------------------------------------------GetDividend Method----------------------------------------------------------------------------*/
 
-        public List<Dividend> GetDividends(string symbol)
-                    {
-            // used to retrieve information from API
+        public List<Dividend> GetDividends(string symbol) //it is used to pull data from dividended API endpoint
+
+        {
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/dividends/5y";
-            // initialize objects needed to gather data
             string dividends = "";
             List<Dividend> DividendList = new List<Dividend>();
             httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
 
-            // connect to the API and obtain the response
+            // connection to API
             HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
 
-            // now, obtain the Json objects in the response as a string
+            // Receiving JSON
             if (response.IsSuccessStatusCode)
             {
                 dividends = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
 
-            // parse the string into appropriate objects
 
             if (!dividends.Equals(""))
             {
                 DividendList = JsonConvert.DeserializeObject<List<Dividend>>(dividends);
             }
 
-            // fix the relations. By default the quotes do not have the company symbol
 
             foreach (Dividend Dividend in DividendList)
             {
@@ -112,16 +109,16 @@ namespace API_Usage.Controllers
             return DividendList;
         }
                
-        public DividendVM getDividendVM(List<Dividend> dividends)
+        public DividendVM getDividendVM(List<Dividend> Mydiv)
 
         {
             List<Company> companies = dbContext.Companies.ToList();
-            if (dividends.Count == 0)
+            if (Mydiv.Count == 0)
             {
                 return new DividendVM(companies, null);
             }
-            Dividend current = dividends.Last();
-            return new DividendVM(companies, dividends.Last());
+            Dividend current = Mydiv.Last();
+            return new DividendVM(companies, Mydiv.Last());
         }
 
 /*-----------------------------------------------------------Largest Trade API Endpoint---------------------------------------------------------------------*/
@@ -130,99 +127,65 @@ namespace API_Usage.Controllers
 
         {
 
-            //Set ViewBag variable first
+            //ViewBag Intialization
 
             ViewBag.dbSuccessChart = 0;
 
-            List<Trade> trades = new List<Trade>();
-
-
+            List<Trade> Largesttrades = new List<Trade>();
 
             if (symbol != null)
-
             {
-
-                trades = GetTrades(symbol);
-
+                Largesttrades = GetTrades(symbol);
             }
 
+            TradeVM LargestTradeReturn = getTradeVM(Largesttrades);
 
-
-            TradeVM tradeViewModel = getTradeVM(trades);
-
-
-
-            return View(tradeViewModel);
+            return View(LargestTradeReturn);
 
         }
-
-
+/*--------------------------------------------------------------------Largest Trade Method------------------------------------------------------------------------*/
 
         public List<Trade> GetTrades(string symbol)
 
         {
 
-            // string to specify information to be retrieved from the API
-
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/largest-trades";
 
+            string Fixtrades = "";
 
-
-            // initialize objects needed to gather data
-
-            string trades = "";
-
-            List<Trade> Trades = new List<Trade>();
+            List<Trade> LargestTradesList = new List<Trade>();
 
             httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
 
-
-
-            // connect to the API and obtain the response
-
+            // API Connection
             HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
 
-
-
-            // now, obtain the Json objects in the response as a string
-
+            // JSON conversion
             if (response.IsSuccessStatusCode)
 
             {
-
-                trades = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
+                Fixtrades = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
 
 
 
             // parse the string into appropriate objects
 
-            if (!trades.Equals(""))
+            if (!Fixtrades.Equals(""))
 
             {
 
-                Trades = JsonConvert.DeserializeObject<List<Trade>>(trades);
+                LargestTradesList = JsonConvert.DeserializeObject<List<Trade>>(Fixtrades);
 
             }
 
-
-
-            // fix the relations. By default the quotes do not have the company symbol
-
-            //  this symbol serves as the foreign key in the database and connects the quote to the company
-
-            foreach (Trade Trade in Trades)
+            foreach (Trade Trade in LargestTradesList)
 
             {
-
                 Trade.symbol = symbol;
-
             }
 
-
-
-            return Trades;
+            return LargestTradesList;
 
         }
 
@@ -231,40 +194,71 @@ namespace API_Usage.Controllers
         public TradeVM getTradeVM(List<Trade> trades)
 
         {
-
             List<Company> companies = dbContext.Companies.ToList();
-
-
-
             if (trades.Count == 0)
-
             {
 
                 return new TradeVM(companies, null);
-
             }
-
             Trade current = trades.Last();
-
             return new TradeVM(companies, trades.Last());
-
         }
-        /****
-         * The Symbols action calls the GetSymbols method that returns a list of Companies.
-         * This list of Companies is passed to the Symbols View.
-        ****/
+
+ /*----------------------------------------------------------------Get Symbols API Endpoint-----------------------------------------------------------------------*/ 
+ /*---------------------------------------------------------------Get Symbols Action Method-----------------------------------------------------------------------*/ 
+     
+            /* The Symbols action calls the GetSymbols method that returns a list of Companies.
+             * * This list of Companies is passed to the Symbols View.
+             */
+
         public IActionResult Symbols()
         {
             //Set ViewBag variable first
             ViewBag.dbSucessComp = 0;
             List<Company> companies = GetSymbols();
-
             //Save companies in TempData, so they do not have to be retrieved again
             TempData["Companies"] = JsonConvert.SerializeObject(companies);
             //TempData["Companies"] = companies;
 
             return View(companies);
         }
+
+/*-------------------------------------------------------------------Get Symbols Method-------------------------------------------------------------------------*/
+        /// <summary>
+        /// Calls the IEX reference API to get the list of symbols
+        /// </summary>
+        /// <returns>A list of the companies whose information is available</returns>
+        
+        public List<Company> GetSymbols()
+        {
+            string IEXTrading_API_PATH = BASE_URL + "ref-data/symbols";
+            string companyList = "";
+            List<Company> companies = null;
+
+            // connect to the IEXTrading API and retrieve information
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+
+            // read the Json objects in the API response
+            if (response.IsSuccessStatusCode)
+            {
+                companyList = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            // now, parse the Json strings as C# objects
+            if (!companyList.Equals(""))
+            {
+                // https://stackoverflow.com/a/46280739
+                //JObject result = JsonConvert.DeserializeObject<JObject>(companyList);
+                companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
+                companies = companies.GetRange(0, 50);
+            }
+
+            return companies;
+        }
+
+/*----------------------------------------------------------------------Yearly Equity Comparison-------------------------------------------------------------*/
+/*---------------------------------------------------------------Yearly Equity Comparison Action Method------------------------------------------------------*/
 
         public IActionResult ComparisonByEquity(string symbol1, string symbol2) //it allows users to compare two selected symbols based on their yearly equity 
         {
@@ -288,114 +282,7 @@ namespace API_Usage.Controllers
 
             return View(VM);
         }
-
-        public IActionResult ComparisonByDailyEquity(string symbol1, string symbol2) //it allows users to compare two selected symbols based on their daily equity
-        {
-            //Set ViewBag variable first
-            ViewBag.dbSuccessChart = 0;
-
-            List<DailyEquity> dailyequity1 = new List<DailyEquity>();
-            List<DailyEquity> dailyequity2 = new List<DailyEquity>();
-
-
-            if (symbol1 != null && symbol2 != null)
-            {
-                dailyequity1 = GetDailyChart(symbol1);  //it calls getdailychart method which returns the daily equity report
-                dailyequity2 = GetDailyChart2(symbol2);
-
-                dailyequity1 = dailyequity1.OrderByDescending(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
-                dailyequity2 = dailyequity2.OrderByDescending(c => c.minute).ToList();
-            }
-            var DailyVM = new EQComparison(); // to return to list through the view to the related view
-            DailyVM.FirstDailyEQ = dailyequity1;
-            DailyVM.SecondDailyEQ = dailyequity2;
-
-            return View(DailyVM);
-        }
-
-
-
-        /****
-         * The Chart action calls the GetChart method that returns 1 year's equities for the passed symbol.
-         * A ViewModel CompaniesEquities containing the list of companies, prices, volumes, avg price and volume.
-         * This ViewModel is passed to the Chart view.
-        ****/
-        /// <summary>
-        /// The Chart action calls the GetChart method that returns 1 year's equities for the passed symbol.
-        /// A ViewModel CompaniesEquities containing the list of companies, prices, volumes, avg price and volume.
-        /// This ViewModel is passed to the Chart view.
-        /// </summary>
-        /// <param name="symbol"></param>
-        /// <returns></returns>
-        public IActionResult Chart(string symbol)
-        {
-            //Set ViewBag variable first
-            ViewBag.dbSuccessChart = 0;
-            List<Equity> equities = new List<Equity>();
-
-            if (symbol != null)
-            {
-                equities = GetChart(symbol);
-                equities = equities.OrderBy(c => c.date).ToList(); //Make sure the data is in ascending order of date.
-            }
-
-            CompaniesEquities companiesEquities = getCompaniesEquitiesModel(equities);
-
-            return View(companiesEquities);
-        }
-
-        
-
-
-
-
-        //public IActionResult Trades()
-        //{
-        //    //Set ViewBag variable first
-        //    ViewBag.dbSucessComp = 0;
-        //    List<LargestTrade> tra = GetTrade();
-
-        //    //Save companies in TempData, so they do not have to be retrieved again
-        //    TempData["Trades"] = JsonConvert.SerializeObject(tra);
-        //    //TempData["Companies"] = companies;
-
-        //    return View(tra);
-        //}
-        /// <summary>
-        /// Calls the IEX reference API to get the list of symbols
-        /// </summary>
-        /// <returns>A list of the companies whose information is available</returns>
-        public List<Company> GetSymbols()
-        {
-            string IEXTrading_API_PATH = BASE_URL + "ref-data/symbols";
-            string companyList = "";
-            List<Company> companies = null;
-
-            // connect to the IEXTrading API and retrieve information
-            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
-            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
-
-            // read the Json objects in the API response
-            if (response.IsSuccessStatusCode)
-            {
-                companyList = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            }
-
-            // now, parse the Json strings as C# objects
-            if (!companyList.Equals(""))
-            {
-                // https://stackoverflow.com/a/46280739
-                //JObject result = JsonConvert.DeserializeObject<JObject>(companyList);
-                companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
-                companies = companies.GetRange(0,50);
-            }
-
-            return companies;
-        }
-
-        
-
-  
+/*--------------------------------------------------------------Get Annual Chart Method--------------------------------------------------------------------------*/
 
         /// <summary>
         /// Calls the IEX stock API to get 1 year's chart for the supplied symbol
@@ -478,6 +365,35 @@ namespace API_Usage.Controllers
             return Equities;
         }
 
+/*---------------------------------------------------------------------Daily Equity API Endpoint------------------------------------------------------------------*/
+/*--------------------------------------------------------------------Daily Equity Action Method------------------------------------------------------------------*/
+
+
+        public IActionResult ComparisonByDailyEquity(string symbol1, string symbol2) //it allows users to compare two selected symbols based on their daily equity
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSuccessChart = 0;
+
+            List<DailyEquity> dailyequity1 = new List<DailyEquity>();
+            List<DailyEquity> dailyequity2 = new List<DailyEquity>();
+
+
+            if (symbol1 != null && symbol2 != null)
+            {
+                dailyequity1 = GetDailyChart(symbol1);  //it calls getdailychart method which returns the daily equity report
+                dailyequity2 = GetDailyChart2(symbol2);
+
+                dailyequity1 = dailyequity1.OrderByDescending(c => c.minute).ToList(); //Make sure the data is in ascending order of date.
+                dailyequity2 = dailyequity2.OrderByDescending(c => c.minute).ToList();
+            }
+            var DailyVM = new EQComparison(); // to return to list through the view to the related view
+            DailyVM.FirstDailyEQ = dailyequity1;
+            DailyVM.SecondDailyEQ = dailyequity2;
+
+            return View(DailyVM);
+        }
+
+/*--------------------------------------------------------------Daily Equity Method----------------------------------------------------------------------------------*/
 
         public List<DailyEquity> GetDailyChart(string symbol)  //this method returns the list of daily report using the specified API end point
         {
@@ -499,10 +415,10 @@ namespace API_Usage.Controllers
                 var aa = Dailycharts.GetType();
             }
 
-                if (!Dailycharts.Equals(""))
-                {
+            if (!Dailycharts.Equals(""))
+            {
 
-                 DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                DailyEquity[] dailyEquities = JsonConvert.DeserializeObject<DailyEquity[]>(Dailycharts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 DailyEquities = dailyEquities.ToList();
 
             }
@@ -558,17 +474,38 @@ namespace API_Usage.Controllers
             return DailyEquities;
         }
 
-        
-        
 
 
+        /****
+         * The Chart action calls the GetChart method that returns 1 year's equities for the passed symbol.
+         * A ViewModel CompaniesEquities containing the list of companies, prices, volumes, avg price and volume.
+         * This ViewModel is passed to the Chart view.
+        ****/
+        /// <summary>
+        /// The Chart action calls the GetChart method that returns 1 year's equities for the passed symbol.
+        /// A ViewModel CompaniesEquities containing the list of companies, prices, volumes, avg price and volume.
+        /// This ViewModel is passed to the Chart view.
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        public IActionResult Chart(string symbol)
+        {
+            //Set ViewBag variable first
+            ViewBag.dbSuccessChart = 0;
+            List<Equity> equities = new List<Equity>();
 
+            if (symbol != null)
+            {
+                equities = GetChart(symbol);
+                equities = equities.OrderBy(c => c.date).ToList(); //Make sure the data is in ascending order of date.
+            }
 
+            CompaniesEquities companiesEquities = getCompaniesEquitiesModel(equities);
 
-
-
-
-
+            return View(companiesEquities);
+        }
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
         /// <summary>
         /// Call the ClearTables method to delete records from a table or all tables.
         ///  Count of current records for each table is passed to the Refresh View
