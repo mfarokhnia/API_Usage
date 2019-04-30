@@ -6,10 +6,75 @@
 
 @{
 
-    ViewData["Title"] = "Trades";
-
+    int Time = DateTime.Now.Hour;
 }
 
+@if ((DateTime.Now.DayOfWeek == DayOfWeek.Saturday) || (DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
+{
+    <div style="float: right;">
+        <p>
+            <b><font color="Red" size="5">Weekend!!! Stock Market is Closed</font></b><br />
+            <div id="txt" style="float: right; color:Blue;"></div>
+        </p>
+    </div>
+}
+else
+{
+
+    @if ((Time >= 9) && (Time <= 16))
+
+    {
+        <div style="float: right;">
+            <p>
+                <b><font color="Blue" size="6">Stock Market is Opened</font></b><br />
+                <div id="txt" style="float: right; color:Blue;"></div>
+            </p>
+        </div>
+
+    }
+    else
+    {
+        <div style="float: right;">
+            <p>
+                <b><font color="Red" size="5">Stock Market is Closed</font></b><br />
+                <div id="txt" style="float: right; color:Blue;"></div>
+            </p>
+        </div>
+
+    }
+}
+
+<html>
+<head>
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML =
+                h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };
+            return i;
+        }
+    </script>
+    <style>
+        body {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            float: left;
+        }
+    </style>
+</head>
 
 
 <h2>Largest Trades</h2>
@@ -19,197 +84,166 @@
 <hr />
 
 
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Trade" method="get">
+            <p> Symbol: <input type="text" id="txtName" name="symbol" /><input type="submit" value="Get Trade" /></p>
 
-<form asp-controller="Trade" asp-action="Trade" method="get">
 
-    <select name="symbol">
+        </form>
+    </div>
+</div>
 
-        @foreach (var company in Model.Companies)
+<body onload="startTime()">
 
-        {
+    @if (Model.Current != null)
 
-            <option value=@company.symbol selected>@company.name</option>
+    {
 
-        }
+        var equity = Model.Current;
 
-    </select>
+        <hr />
 
-    <input type="submit" value="Get Largest Trades" />
+        <table>
 
-</form>
+            <tbody>
 
+                <tr>
 
+                    <td>
 
+                        Largest Trades Data
 
+                        <table>
 
-@if (Model.Current != null)
+                            <tr>
 
-{
+                                <td>
 
-    var equity = Model.Current;
+                                    Symbol
 
-    <hr />
+                                </td>
 
-    <table>
+                                <td>
 
-        <tbody>
+                                    @equity.symbol
 
-            <tr>
+                                </td>
 
-                <td>
+                            </tr>
 
-                    Largest Trades Data
+                            <tr>
 
-                    <table>
+                                <td>
 
-                        <tr>
+                                    Price
 
-                            <td>
+                                </td>
 
-                                Symbol
+                                <td>
 
-                            </td>
+                                    @equity.price
 
-                            <td>
+                                </td>
 
-                                @equity.symbol
+                            </tr>
 
-                            </td>
+                            <tr>
 
-                        </tr>
+                                <td>
 
-                        <tr>
+                                    Size
 
-                            <td>
+                                </td>
 
-                                Price
+                                <td>
 
-                            </td>
+                                    @equity.size
 
-                            <td>
+                                </td>
 
-                                @equity.price
+                            </tr>
 
-                            </td>
+                            <tr>
 
-                        </tr>
+                                <td>
 
-                        <tr>
+                                    Time
 
-                            <td>
+                                </td>
 
-                                Size
+                                <td>
 
-                            </td>
+                                    @equity.time
 
-                            <td>
+                                </td>
 
-                                @equity.size
+                            </tr>
 
-                            </td>
+                            <tr>
 
-                        </tr>
+                                <td>
 
-                        <tr>
+                                    Time Label
 
-                            <td>
+                                </td>
 
-                                Time
+                                <td>
 
-                            </td>
+                                    @equity.timeLabel
 
-                            <td>
+                                </td>
 
-                                @equity.time
+                            </tr>
 
-                            </td>
+                            <tr>
 
-                        </tr>
+                                <td>
 
-                        <tr>
+                                    Venue
 
-                            <td>
+                                </td>
 
-                                Time Label
+                                <td>
 
-                            </td>
+                                    @equity.venue
 
-                            <td>
+                                </td>
 
-                                @equity.timeLabel
+                            </tr>
 
-                            </td>
+                            <tr>
 
-                        </tr>
+                                <td>
 
-                        <tr>
+                                    Venue Name
 
-                            <td>
+                                </td>
 
-                                Venue
+                                <td>
 
-                            </td>
+                                    @equity.venueName
 
-                            <td>
+                                </td>
 
-                                @equity.venue
+                            </tr>
 
-                            </td>
+                        </table>
 
-                        </tr>
+                    </td>
 
-                        <tr>
 
-                            <td>
 
-                                Venue Name
+                </tr>
 
-                            </td>
+            </tbody>
 
-                            <td>
+        </table>
 
-                                @equity.venueName
+    }
 
-                            </td>
 
-                        </tr>
 
-                    </table>
 
-                </td>
-
-                <td>
-
-                    @*<div>
-
-                          <canvas id="myChart" height="500" width="800"></canvas>
-
-                        </div>*@
-
-                </td>
-
-                <td>
-
-                    <a asp-controller="Trade" asp-action="SaveTrades" asp-route-symbol="@Model.Current.symbol">
-
-                        <img src="~/img/button_save-data.png" />
-
-                    </a>
-
-                </td>
-
-            </tr>
-
-        </tbody>
-
-    </table>
-
-}
-
-
-
-<script>
-
-    alertDbSave(@ViewBag.dbSuccessChart);
-
-</script>
+</body>
+</html>
