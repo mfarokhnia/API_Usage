@@ -24,25 +24,25 @@
         We are adding five more API end points to pull stock data including the below:
         <ul>
             <li>
-                /stock/aapl/quote: This gives us the quota data
+                /largest-trades: This gives us the largest trade
             </li>
             <li>
-                /stock/aapl/financials: Pulls income statement, balance sheet, and cash flow data from the four most recent reported quarters.
+                /dividends/5y: Pulls Dividend data for the past 5y.
             </li>
             <li>
-                /stock/aapl/chart/1y: Historically adjusted market-wide data
+                /stock/{Symbol}/chart/1y: Historically adjusted market-wide data
             </li>
             <li>
-                /stock/aapl/chart/1d: Performed a batch request for two symbols
+                /batch?types=chart&range=3m: Performed a batch request for two symbols
             </li>
             <li>
-                /stock/aapl/company:  Through this api end point we pull the information about companies incuding their symbols, name, industry, etc.
+                /stock/{symbol}/company:  Through this api end point we pull the information about companies incuding their symbols, name, industry, etc.
             </li>
 
         </ul>
 
         Our application focused mostly on the Stock data that IEXTrading is proving through their end point.
-        Among the five, all of them had lots of fields avaialable to choose from, but for simplicity we only pulled the fields that we needed for enhancing the application.
+        Among the five, all of them had lots of fields available to choose from, but for simplicity we only pulled the fields that we needed for enhancing the application.
 
         We created five database tables to hold these data their tables definitions can be seen in the Model classes where we provided data dictionary for all the tables and feilds.
         The new classes added are:
@@ -60,14 +60,16 @@
                         DailyEquity
                     </li>
                     <li>
-                        Financial
+                        Largest Trade
                     </li>
                     <li>
-                        Quote
+                        Dividends
                     </li>
 
                 </ul>
+                
             </li>
+
         </ul>
         <br />
         All the data model class and database definitions are in the class models. The application is designed in the way that , it will automatically create the database objects, including the
